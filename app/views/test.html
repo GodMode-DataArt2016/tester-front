@@ -1,0 +1,11 @@
+<div class="container">
+	<div ng-model="test">
+		<div>Info for test -> {{test.name}}</div>
+		<table class="table table-hover">
+			<tr ng-repeat="question in test.questions">
+				<td>{{question}}</td>					
+			</tr>
+		</table>
+	</div>
+</div>
+
