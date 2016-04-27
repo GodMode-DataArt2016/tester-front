@@ -2,16 +2,28 @@
 	{
 		"id":1,
 		"name": "firstTest",
-		"questions": ["one", "two"]
+		"privateTest": false,
+		"startDate": 1461785956668,
+		"endDate": 1461785959999,
+		"questions": [1,2,3],
+		"answers": [1,2,3]
 	},
 	{
 		"id":2,
-		"name": "fsecondTest",
-		"questions": ["one", "two"]
+		"name": "firstTest2",
+		"privateTest": false,
+		"startDate": 1461785956668,
+		"endDate": 1461785959999,
+		"questions": [4,5,6],
+		"answers": [4,5,6]
 	},
 	{
 		"id":3,
-		"name": "thirdTest",
-		"questions": ["one", "two"]
+		"name": "firstTest3",
+		"privateTest": false,
+		"startDate": 1461785956668,
+		"endDate": 1461785959999,
+		"questions": [7,8,9],
+		"answers": [7,8,9]
 	}
 ]

@@ -1,0 +1,8 @@
+{
+	"id":9,
+	"textDescription": "question № 9",
+	"type": "radio",
+	"UUID": "UUID",
+	"picture": "",
+	"allAnswers": ["answer 1","answer 2","answer 3"]
+}

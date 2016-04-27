@@ -1,0 +1,8 @@
+{
+	"id":6,
+	"textDescription": "question № 6",
+	"type": "checkbox",
+	"UUID": "UUID",
+	"picture": "",
+	"allAnswers": ["answer 1","answer 2","answer 3"]
+}

@@ -20,3 +20,12 @@ testerFrontServices.factory("Test", function($resource) {
     query: { method: "GET", isArray: true }
   });
 });
+
+testerFrontServices.factory("Question", function($resource) {
+  return $resource("api/questions/:id.json", {}, {
+    query: { method: "GET", isArray: true }
+  });
+});
+
+
+

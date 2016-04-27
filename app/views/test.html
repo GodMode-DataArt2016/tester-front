@@ -1,11 +1,35 @@
 <div class="container">
 	<div ng-model="test">
 		<div>Info for test -> {{test.name}}</div>
+	</div>
+	<div ng-model="questions">
 		<table class="table table-hover">
-			<tr ng-repeat="question in test.questions">
-				<td>{{question}}</td>					
+			<tr ng-repeat="question in questions">
+				<td>
+					<div>{{question.textDescription}}</div>				
+					<form role="form"  ng-if="question.type == 'checkbox'">
+						<div class="checkbox" ng-repeat="answer in question.allAnswers">
+							<label>
+								<input type="checkbox"> {{answer}}
+							</label>
+						</div>
+					</form>
+					<form role="form" ng-if="question.type == 'radio'">
+						<div class="checkbox" ng-repeat="answer in question.allAnswers">
+							<label>
+								<input type="radio" name="question"> {{answer}}
+							</label>
+						</div>
+					</form>
+					<div ng-if="question.type == 'image'">
+						<img ng-src={{question.picture}} alt="question" height="200px">
+					</div>
+				</td>
 			</tr>
 		</table>
 	</div>
 </div>
 
+
+
+{{image.name?('img/'+ image.name +'_img.png'):null}}
