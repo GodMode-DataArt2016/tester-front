@@ -1,8 +1,8 @@
 {
 	"id":1,
 	"textDescription": "question № 1",
-	"type": "radio",
+	"type": "checkbox",
 	"UUID": "UUID",
-	"pictire": "image_url",
+	"picture": "",
 	"allAnswers": ["answer 1","answer 2","answer 3"]
 }

@@ -1,7 +1,7 @@
 {
 	"id":3,
 	"textDescription": "question № 3",
-	"type": "image",
+	"type": "checkbox",
 	"UUID": "UUID",
 	"picture": "http://40.media.tumblr.com/tumblr_lxsx4pAafb1qfu4tho1_500.png",
 	"allAnswers": ["answer 1","answer 2","answer 3"]

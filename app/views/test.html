@@ -1,35 +1,49 @@
 <div class="container">
+	<div>
+		<form novalidate class="simple-form">
+			<input type="text" class="form-control" ng-model="userForm.name" placeholder="Name" /><br />
+			<input type="text" class="form-control" ng-model="userForm.surname" placeholder="Surname" /><br />
+			<input type="text" class="form-control" ng-model="userForm.phone" placeholder="Phone" /><br />
+			<input type="email" class="form-control" ng-model="userForm.email" placeholder="E-mail" /><br />	
+		</form>
+	<div>
 	<div ng-model="test">
-		<div>Info for test -> {{test.name}}</div>
+		<h1>Test name -> {{test.name}}</h1>
 	</div>
 	<div ng-model="questions">
 		<table class="table table-hover">
 			<tr ng-repeat="question in questions">
 				<td>
-					<div>{{question.textDescription}}</div>				
+					<div>{{question.textDescription}}</div>
+					<div ng-if="question.picture != ''">
+						<img ng-src={{question.picture}} alt="question" height="200px">
+					</div>
 					<form role="form"  ng-if="question.type == 'checkbox'">
-						<div class="checkbox" ng-repeat="answer in question.allAnswers">
+						<div class="checkbox" ng-repeat="(answer,enabled) in question.allAnswers">
 							<label>
-								<input type="checkbox"> {{answer}}
+								<input type="checkbox" name="question" ng-model="question.allAnswers[answer]">{{answer}}
 							</label>
 						</div>
+						<div style="color:grey;"> test output = {{question.allAnswers}}</div>
 					</form>
 					<form role="form" ng-if="question.type == 'radio'">
-						<div class="checkbox" ng-repeat="answer in question.allAnswers">
+						<div class="checkbox" ng-repeat="(answer,enabled) in question.allAnswers">
 							<label>
-								<input type="radio" name="question"> {{answer}}
+								<input type="radio" ng-value="answer" name="question" ng-model="question.radioAnswer">{{answer}}
 							</label>
 						</div>
-					</form>
-					<div ng-if="question.type == 'image'">
-						<img ng-src={{question.picture}} alt="question" height="200px">
+						<div style="color:grey;">test output = {{question.radioAnswer}}</div>
+					</form>	
+					<div ng-if="question.type == 'text'">
+						<input type="text" ng-model="question.textAnswer" class="form-control" placeholder="Type answer here">
+						<div style="color:grey;">test output = {{question.textAnswer}}</div>
 					</div>
 				</td>
 			</tr>
 		</table>
+		<button type="button" class="btn btn-success" ng-click="submitAnswer()">Submit answer</button>
 	</div>
 </div>
 
 
 
-{{image.name?('img/'+ image.name +'_img.png'):null}}
