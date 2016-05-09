@@ -95,4 +95,29 @@ angular.module('testerFrontApp')
 }]);
 
 
+angular.module('testerFrontApp')
+	.controller('NewtestCtrl', ['$scope', function($scope) {
+		var questions = [];
+		$scope.questions = questions;
+		
+		$scope.addQuestion = function(){
+			var newQuestion = {};
+			newQuestion.type = 'radio';
+			newQuestion.allAnswers = [];
+			$scope.questions.push(newQuestion);	
+		}
+		
+		$scope.addAnswer =  function(question){
+			var newAnswer = {};
+			newAnswer.text = '';
+			newAnswer.isTrue = false;
+			question.allAnswers.push(newAnswer);		
+		}
+		
+		$scope.removeAnswer = function(question, id){
+			console.log(question);
+			question.allAnswers.splice(id, 1);
+			console.log(question);
+		}
+}]);
 

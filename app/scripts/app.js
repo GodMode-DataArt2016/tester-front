@@ -35,6 +35,16 @@ angular
 		  controller: 'TestCtrl',
 		  controllerAs: 'test'
       })
+	  .when('/admin', {
+		  templateUrl: 'views/admin.html',
+		  controller: 'AdminCtrl',
+		  controllerAs: 'admin'
+      })
+	  .when('/admin/newtest', {
+		  templateUrl: 'views/newtest.html',
+		  controller: 'NewtestCtrl',
+		  controllerAs: 'newtest'
+      })
       .otherwise({
         redirectTo: '/'
       });
