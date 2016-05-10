@@ -119,5 +119,81 @@ angular.module('testerFrontApp')
 			question.allAnswers.splice(id, 1);
 			console.log(question);
 		}
+		
+		$scope.removeQuestion = function (arr, id){
+				arr.splice(id, 1);	
+		}
+		
+		$scope.submitTest = function (){
+			var verified = true;
+			var submitObject = [];
+			
+			submitObject.testName = $scope.testName;
+			submitObject.startDate = $scope.startDate;
+			submitObject.endDate = $scope.endDate;
+			submitObject.isPublic = $scope.isPublic;
+			submitObject.questions = [];
+			
+			if(!(submitObject.testName && submitObject.startDate && submitObject.endDate)){
+				verified = false;	
+			}
+			
+			if(!$scope.questions.length){
+				verified = false;	
+			}
+			
+			$scope.questions.forEach(function(item){
+				var questionInfo = {};
+				questionInfo.id = item.id;
+				switch (item.type) {
+					case "radio":
+						if(item.allAnswers.length){
+							item.allAnswers.forEach(function(item){
+								if(!item) {
+									verified = false;	
+								}	
+							});
+							questionInfo.answers = item.allAnswers;
+							questionInfo.type = "radio";
+						} else {
+							verified = false;	
+						}
+					break;
+					case "text":
+						if(item.textAnswer){
+							questionInfo.answers = item.textAnswer;
+							questionInfo.type = "text";
+						} else {
+							verified = false;
+						}
+					break;
+					case "checkbox":
+						if(item.allAnswers.length){
+							item.allAnswers.forEach(function(item){
+								if(!item) {
+									verified = false;	
+								}	
+							});
+							questionInfo.answers = item.allAnswers;
+							questionInfo.type = "checkbox";
+						} else {
+							verified = false;	
+						}											
+					break;
+				}
+				if(questionInfo.answers){
+					submitObject.questions.push(questionInfo);
+				} else {
+					verified = false;				
+				}
+				
+			});
+			
+			if(verified){
+				alert("success");	
+			} else {
+				alert("provide all data");		
+			}
+		}
 }]);
 
