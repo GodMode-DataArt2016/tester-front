@@ -1,0 +1,21 @@
+{
+	"id":1,
+	"textDescription": "question № 1",
+	"type": "radio",
+	"UUID": "UUID",
+	"picture": "",
+	"allAnswers": [
+		{
+			"text":"answer 1",
+			"isTrue":false
+		},
+		{
+			"text":"answer 2",
+			"isTrue":true
+		},
+		{
+			"text":"answer 3",
+			"isTrue":false
+		}],
+	"answersAreImages": false
+}

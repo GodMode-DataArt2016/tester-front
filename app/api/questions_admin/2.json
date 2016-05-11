@@ -1,0 +1,21 @@
+{
+	"id":2,
+	"textDescription": "question № 2",
+	"type": "checkbox",
+	"UUID": "UUID",
+	"picture": "",
+	"allAnswers": [
+		{
+			"text":"answer 1",
+			"isTrue":false
+		},
+		{
+			"text":"answer 2",
+			"isTrue":true
+		},
+		{
+			"text":"answer 3",
+			"isTrue":false
+		}],
+	"answersAreImages": false
+}

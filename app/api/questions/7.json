@@ -4,5 +4,6 @@
 	"type": "checkbox",
 	"UUID": "UUID",
 	"picture": "",
-	"allAnswers": ["answer 1","answer 2","answer 3"]
+	"allAnswers": ["answer 1","answer 2","answer 3"],
+	"answersAreImages": false
 }

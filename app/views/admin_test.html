@@ -1,0 +1,67 @@
+<div class="container">
+	<div>	
+		<input type="text" class="form-control" ng-model="test.testName" placeholder="type test name" /><br />		
+		<div class="checkbox">
+			<input type="checkbox" name="question" ng-model="test.isPublic">{{isPublic?'Public':'not public'}}
+		</div>		
+		<div class="row">
+			<div class="col-sm-4">
+				<form>
+					Start date:
+					<input type="date" name="startday" ng-model="test.startDate">
+				</form>
+			</div>
+			<div class="col-sm-4">
+				<form>
+					End date:
+					<input type="date" name="endday"  ng-model="test.endDate">
+				</form>
+			</div>
+		</div>
+		<div ng-model="questions">
+			<table class="table table-hover">
+				<tr ng-repeat="question in questions">
+					<td>
+						<label>Question # {{$index}}</label>
+						<button class="btn btn-danger " ng-click="removeQuestion(questions,$index)" aria-label="Remove">X</button>
+						<input type="text" class="form-control" ng-model="question.textDescription" placeholder="type your question here" />
+						<form role="form">
+							<div class="checkbox">								
+								<label> radio
+									<input type="radio" value="radio" name="question" ng-model="question.type">
+								</label>
+								<label> checkbox
+									<input type="radio" value="checkbox" name="question" ng-model="question.type">
+								</label>
+								<label> text
+									<input type="radio" value="text" name="question" ng-model="question.type">
+								</label>
+							</div>
+						</form>
+						<form role="form" ng-if="question.type == 'checkbox'">
+							<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
+								<input type="checkbox" ng-model="answer.isTrue">
+								<input type="text" class="form-control" ng-model="answer.text" placeholder="answer" />
+								<button class="btn btn-danger " ng-click="removeAnswer(question,$index)" aria-label="Remove">X</button>
+							</div>
+							<button type="button" class="btn btn-success" ng-click="addAnswer(question)">add answer</button>
+						</form>
+						<form role="form" ng-if="question.type == 'radio'">
+							<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
+								<input type="radio" value="{{$index}}" name="question" ng-model="question.radioAnswer">
+								<input type="text" class="form-control" ng-model="answer.text" placeholder="answer" />
+								<button class="btn btn-danger" ng-click="removeAnswer(question,$index)" aria-label="Remove">X</button>
+							</div>
+							<button type="button" class="btn btn-success" ng-click="addAnswer(question)">add answer</button>
+						</form>	
+						<div ng-if="question.type == 'text'">
+							<input type="text" ng-model="question.textAnswer" class="form-control" placeholder="Type answer here">
+						</div>						
+					</td>
+				</tr>
+			</table>
+		</div>
+		<button type="button" class="btn btn-success" ng-click="addQuestion()">add question</button>
+	<div>
+	<button type="button" class="btn btn-success" ng-click="submitTest()">submit</button>
+</div>

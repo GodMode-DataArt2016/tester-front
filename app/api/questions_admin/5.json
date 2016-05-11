@@ -4,6 +4,18 @@
 	"type": "checkbox",
 	"UUID": "UUID",
 	"picture": "https://s-media-cache-ak0.pinimg.com/736x/05/63/cd/0563cd1937bea536929a85e33fa6bfbe.jpg",
-	"allAnswers": ["answer 1","answer 2","answer 3"],
+	"allAnswers": [
+		{
+			"text":"answer 1",
+			"isTrue":false
+		},
+		{
+			"text":"answer 2",
+			"isTrue":true
+		},
+		{
+			"text":"answer 3",
+			"isTrue":false
+		}],
 	"answersAreImages": false
 }

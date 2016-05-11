@@ -21,7 +21,13 @@
 					<form role="form"  ng-if="question.type == 'checkbox'">
 						<div class="checkbox" ng-repeat="(answer,enabled) in question.allAnswers">
 							<label>
-								<input type="checkbox" name="question" ng-model="question.allAnswers[answer]">{{answer}}
+								<input type="checkbox" name="question" ng-model="question.allAnswers[answer]">
+									<div ng-if="question.answersAreImages">
+										<img ng-src={{answer}}>
+									</div>
+									<div ng-if="!question.answersAreImages">
+										{{answer}}
+									</div>	
 							</label>
 						</div>
 						<div style="color:grey;"> test output = {{question.allAnswers}}</div>
@@ -29,7 +35,13 @@
 					<form role="form" ng-if="question.type == 'radio'">
 						<div class="checkbox" ng-repeat="(answer,enabled) in question.allAnswers">
 							<label>
-								<input type="radio" ng-value="answer" name="question" ng-model="question.radioAnswer">{{answer}}
+								<input type="radio" ng-value="answer" name="question" ng-model="question.radioAnswer">
+								<div ng-if="question.answersAreImages">
+									<img ng-src={{answer}}>
+								</div>
+								<formlabel ng-if="!question.answersAreImages">
+									{{answer}}
+								</formlabel>	
 							</label>
 						</div>
 						<div style="color:grey;">test output = {{question.radioAnswer}}</div>
