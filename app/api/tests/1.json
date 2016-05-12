@@ -1,7 +1,7 @@
 {
 	"id":1,
-	"name": "firstTest",
-	"privateTest": false,
+	"testName": "firstTest",
+	"isPublic": true,
 	"startDate": 1461785956668,
 	"endDate": 1461785959999,
 	"questions": [1,2,3],

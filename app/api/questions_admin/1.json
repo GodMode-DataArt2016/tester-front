@@ -7,15 +7,15 @@
 	"allAnswers": [
 		{
 			"text":"answer 1",
-			"isTrue":false
+			"isDefault":true
 		},
 		{
 			"text":"answer 2",
-			"isTrue":true
+			"isDefault":false
 		},
 		{
 			"text":"answer 3",
-			"isTrue":false
+			"isDefault":false
 		}],
 	"answersAreImages": false
 }

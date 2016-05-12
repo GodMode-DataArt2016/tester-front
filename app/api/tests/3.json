@@ -1,9 +1,9 @@
 {
 	"id":3,
-	"name": "firstTest3",
-	"privateTest": false,
-	"startDate": 1461785956668,
-	"endDate": 1461785959999,
+	"testName": "firstTest3",
+	"isPublic": false,
+	"startDate": "2016-01-11T21:03:02.586Z",
+	"endDate": "2016-05-11T21:06:48.951Z",
 	"questions": [7,8,9],
 	"answers": [7,8,9]
 }

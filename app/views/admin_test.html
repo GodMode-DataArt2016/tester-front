@@ -2,7 +2,7 @@
 	<div>	
 		<input type="text" class="form-control" ng-model="test.testName" placeholder="type test name" /><br />		
 		<div class="checkbox">
-			<input type="checkbox" name="question" ng-model="test.isPublic">{{isPublic?'Public':'not public'}}
+			<input type="checkbox" name="question" ng-model="test.isPublic">{{test.isPublic?'Public':'not public'}}
 		</div>		
 		<div class="row">
 			<div class="col-sm-4">
@@ -45,17 +45,20 @@
 								<button class="btn btn-danger " ng-click="removeAnswer(question,$index)" aria-label="Remove">X</button>
 							</div>
 							<button type="button" class="btn btn-success" ng-click="addAnswer(question)">add answer</button>
+							<div style="color:Grey;">test output = {{question.allAnswers}}</div>
 						</form>
 						<form role="form" ng-if="question.type == 'radio'">
 							<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
-								<input type="radio" value="{{$index}}" name="question" ng-model="question.radioAnswer">
+								<input type="radio" ng-click="setDefault(question.allAnswers,answer)" name="answerss" ng-checked="answer.isDefault">
 								<input type="text" class="form-control" ng-model="answer.text" placeholder="answer" />
 								<button class="btn btn-danger" ng-click="removeAnswer(question,$index)" aria-label="Remove">X</button>
 							</div>
 							<button type="button" class="btn btn-success" ng-click="addAnswer(question)">add answer</button>
+							<div style="color:Grey;">test output = {{question.allAnswers}}</div>
 						</form>	
 						<div ng-if="question.type == 'text'">
 							<input type="text" ng-model="question.textAnswer" class="form-control" placeholder="Type answer here">
+							<div style="color:Grey;">test output = {{question.textAnswer}}</div>
 						</div>						
 					</td>
 				</tr>

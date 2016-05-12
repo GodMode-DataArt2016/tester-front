@@ -4,6 +4,18 @@
 	"type": "radio",
 	"UUID": "UUID",
 	"picture": "",
-	"allAnswers": ["answer 1","answer 2","answer 3"],
+	"allAnswers": [
+		{
+			"text":"answer 1",
+			"isDefault":false
+		},
+		{
+			"text":"answer 2",
+			"isDefault":false
+		},
+		{
+			"text":"answer 3",
+			"isDefault":false
+		}],
 	"answersAreImages": false
 }

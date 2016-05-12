@@ -22,33 +22,31 @@ angular.module('testerFrontApp')
 
 angular.module('testerFrontApp')
 	.controller('TestCtrl', ['$scope', '$routeParams', 'Test', 'Question', function($scope, $routeParams, Test, Question) {
+		var questions = [];
+		$scope.questions = questions;
+		
 		Test.get({ id: $routeParams.testId}, function(data) {
 			$scope.test = data;
+			$scope.test.startDate = new Date(data.startDate);
+			$scope.test.endDate = new Date(data.endDate);
 			
 			var questions = [];
 			var questionIDs = data.questions;
 			
 			questionIDs.forEach(function (ID) {
 				Question.get({ id: ID}, function(data) {									
-					var allAnswers = {};
-					data.allAnswers.forEach(function(item){
-						allAnswers[item] = false;	
-					});
-					
-					data.allAnswers = allAnswers;
-
-					if(data.type == 'radio'){
-						data.radioAnswer = null;	
-					}
-					if(data.type == 'text'){
-						data.textAnswer = null;	
-					}
 					questions.push(data);					
 				});
 			});		
 			$scope.questions = questions;
-		});
+		});	
 		
+		$scope.setDefault = function(allAnswers, answer){
+			angular.forEach(allAnswers, function(p) {
+				p.isDefault = false; 
+			});
+			answer.isDefault = true;
+		}
 		
 		$scope.submitArray = null;
 		
@@ -63,7 +61,18 @@ angular.module('testerFrontApp')
 				answerInfo.id = item.id;
 				switch (item.type) {
 					case "radio":
-						answerInfo.answer = item.radioAnswer;
+						answerInfo.answer = item.radioAnswer;					
+						var cbVerified = false;
+						for(var index in item.allAnswers){
+							if(item.allAnswers[index].isDefault){ 
+								var cbVerified = true
+							}
+						}
+						if(cbVerified){
+							answerInfo.answer = item.allAnswers;	
+						} else {
+							verified = false;	
+						}	
 					break;
 					case "text":
 						answerInfo.answer = item.textAnswer;
@@ -71,7 +80,7 @@ angular.module('testerFrontApp')
 					case "checkbox":
 						var cbVerified = false;
 						for(var index in item.allAnswers){
-							if(item.allAnswers[index]){ 
+							if(item.allAnswers[index].isTrue){ 
 								var cbVerified = true
 							}
 						}
@@ -249,6 +258,13 @@ angular.module('testerFrontApp')
 		
 		$scope.removeQuestion = function (arr, id){
 				arr.splice(id, 1);	
+		}
+		
+		$scope.setDefault = function(allAnswers, answer){
+			angular.forEach(allAnswers, function(p) {
+				p.isDefault = false; 
+			});
+			answer.isDefault = true;
 		}
 		
 		$scope.submitTest = function (){

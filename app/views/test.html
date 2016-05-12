@@ -18,38 +18,24 @@
 					<div ng-if="question.picture != ''">
 						<img ng-src={{question.picture}} alt="question" height="200px">
 					</div>
-					<form role="form"  ng-if="question.type == 'checkbox'">
-						<div class="checkbox" ng-repeat="(answer,enabled) in question.allAnswers">
-							<label>
-								<input type="checkbox" name="question" ng-model="question.allAnswers[answer]">
-									<div ng-if="question.answersAreImages">
-										<img ng-src={{answer}}>
-									</div>
-									<div ng-if="!question.answersAreImages">
-										{{answer}}
-									</div>	
-							</label>
+					<form role="form" ng-if="question.type == 'checkbox'">
+						<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
+							<input type="checkbox" ng-model="answer.isTrue">
+							<input type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
 						</div>
-						<div style="color:grey;"> test output = {{question.allAnswers}}</div>
+						<div style="color:Grey;">test output = {{question.allAnswers}}</div>
 					</form>
 					<form role="form" ng-if="question.type == 'radio'">
-						<div class="checkbox" ng-repeat="(answer,enabled) in question.allAnswers">
-							<label>
-								<input type="radio" ng-value="answer" name="question" ng-model="question.radioAnswer">
-								<div ng-if="question.answersAreImages">
-									<img ng-src={{answer}}>
-								</div>
-								<formlabel ng-if="!question.answersAreImages">
-									{{answer}}
-								</formlabel>	
-							</label>
+						<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
+							<input type="radio" ng-click="setDefault(question.allAnswers,answer)" name="answerss" ng-checked="answer.isDefault">
+							<input type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
 						</div>
-						<div style="color:grey;">test output = {{question.radioAnswer}}</div>
+						<div style="color:Grey;">test output = {{question.allAnswers}}</div>
 					</form>	
 					<div ng-if="question.type == 'text'">
 						<input type="text" ng-model="question.textAnswer" class="form-control" placeholder="Type answer here">
-						<div style="color:grey;">test output = {{question.textAnswer}}</div>
-					</div>
+						<div style="color:Grey;">test output = {{question.textAnswer}}</div>
+					</div>	
 				</td>
 			</tr>
 		</table>
