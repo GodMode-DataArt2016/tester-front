@@ -21,14 +21,20 @@
 					<form role="form" ng-if="question.type == 'checkbox'">
 						<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
 							<input type="checkbox" ng-model="answer.isTrue">
-							<input type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
+							<div ng-if="question.answersAreImages">
+								<img ng-src={{answer.url}} alt="answer.url" height="200px">
+							</div>
+							<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
 						</div>
 						<div style="color:Grey;">test output = {{question.allAnswers}}</div>
 					</form>
 					<form role="form" ng-if="question.type == 'radio'">
 						<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
 							<input type="radio" ng-click="setDefault(question.allAnswers,answer)" name="answerss" ng-checked="answer.isDefault">
-							<input type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
+							<div ng-if="question.answersAreImages">
+								<img ng-src={{answer.url}} alt="answer.url" height="200px">
+							</div>
+							<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
 						</div>
 						<div style="color:Grey;">test output = {{question.allAnswers}}</div>
 					</form>	

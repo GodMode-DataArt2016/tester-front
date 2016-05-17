@@ -271,10 +271,10 @@ angular.module('testerFrontApp')
 			var verified = true;
 			var submitObject = [];
 			
-			submitObject.testName = $scope.testName;
-			submitObject.startDate = $scope.startDate;
-			submitObject.endDate = $scope.endDate;
-			submitObject.isPublic = $scope.isPublic;
+			submitObject.testName = $scope.test.testName;
+			submitObject.startDate = $scope.test.startDate;
+			submitObject.endDate = $scope.test.endDate;
+			submitObject.isPublic = $scope.test.isPublic;
 			submitObject.questions = [];
 			
 			if(!(submitObject.testName && submitObject.startDate && submitObject.endDate)){
@@ -337,5 +337,5 @@ angular.module('testerFrontApp')
 			} else {
 				alert("provide all data");		
 			}
-		}
+		}	
 }]);

@@ -4,6 +4,19 @@
 	"type": "checkbox",
 	"UUID": "UUID",
 	"picture": "",
-	"allAnswers": ["http://www.iconsearch.ru/uploads/icons/minimal/64x64/dialog-question.png","http://lib2.uom.gr/heallearn/pluginfile.php/42/course/summary/super-mono-3d-part2-43.png","http://iconizer.net/files/Gnome_Web_Icons/orig/Gnome-Dialog-Question-64.png"],
+	"allAnswers":
+		[
+		{
+			"url":"http://www.iconsearch.ru/uploads/icons/minimal/64x64/dialog-question.png",
+			"isTrue":false
+		},
+		{
+			"url":"http://lib2.uom.gr/heallearn/pluginfile.php/42/course/summary/super-mono-3d-part2-43.png",
+			"isTrue":false
+		},
+		{
+			"url":"http://iconizer.net/files/Gnome_Web_Icons/orig/Gnome-Dialog-Question-64.png",
+			"isTrue":false
+		}],
 	"answersAreImages": true
 }
