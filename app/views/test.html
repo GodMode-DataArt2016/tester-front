@@ -4,11 +4,11 @@
 			<input type="text" class="form-control" ng-model="userForm.name" placeholder="Name" /><br />
 			<input type="text" class="form-control" ng-model="userForm.surname" placeholder="Surname" /><br />
 			<input type="text" class="form-control" ng-model="userForm.phone" placeholder="Phone" /><br />
-			<input type="email" class="form-control" ng-model="userForm.email" placeholder="E-mail" /><br />	
+			<input type="text" class="form-control" ng-model="userForm.email" placeholder="E-mail" /><br />	
 		</form>
 	<div>
 	<div ng-model="test">
-		<h1>Test name -> {{test.name}}</h1>
+		<h1>Test name -> {{test.testName}}</h1>
 	</div>
 	<div ng-model="questions">
 		<table class="table table-hover">
@@ -22,7 +22,7 @@
 						<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
 							<input type="checkbox" ng-model="answer.isTrue">
 							<div ng-if="question.answersAreImages">
-								<img ng-src={{answer.url}} alt="answer.url" height="200px">
+								<img ng-src={{answer.url}} alt="answer.url" height="50px">
 							</div>
 							<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
 						</div>
@@ -32,7 +32,7 @@
 						<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
 							<input type="radio" ng-click="setDefault(question.allAnswers,answer)" name="answerss" ng-checked="answer.isDefault">
 							<div ng-if="question.answersAreImages">
-								<img ng-src={{answer.url}} alt="answer.url" height="200px">
+								<img ng-src={{answer.url}} alt="answer.url" height="50px">
 							</div>
 							<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
 						</div>

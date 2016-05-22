@@ -38,6 +38,15 @@
 								</label>
 							</div>
 						</form>
+						<div class="checkbox">
+							<input type="checkbox" name="imageIncluded" ng-model="question.imageIncluded">{{question.imageIncluded?'not include image':'include image'}}
+						</div>
+						<div ng-if="question.imageIncluded">
+							<form id="file-form" action="" method="POST">
+								<div class="directive" custom-on-change data="question" name="image" changefunc="questionImgChanged"></div>
+								<img ng-src={{question.picture}} alt="" height="50px">
+							</form>
+						</div>
 						<div ng-if="question.type == 'checkbox'">						
 							<form role="form" >
 								<div class="checkbox">
@@ -46,8 +55,8 @@
 								<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
 									<input type="checkbox" ng-model="answer.isTrue">
 									<div ng-if="question.answersAreImages">
-										<form id="file-form" action="handler.php" method="POST">
-											<input type="file" id="file-select" name="photos[]" multiple/>
+										<form id="file-form" action="" method="POST">
+											<div class="directive" custom-on-change data="answer" name="photos[]" changefunc="answerImgChanged"></div>											
 											<img ng-src={{answer.url}} alt="" height="50px">
 										</form>
 									</div>							
@@ -66,8 +75,8 @@
 								<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
 									<input type="radio" ng-click="setDefault(question.allAnswers,answer)" name="answerss" ng-checked="answer.isDefault">
 									<div ng-if="question.answersAreImages">
-										<form id="file-form" action="handler.php" method="POST">
-											<input type="file" id="file-select" name="photos[]" multiple/>
+										<form id="file-form" action="" method="POST">
+											<div class="directive" custom-on-change data="answer" name="photos[]" changefunc="answerImgChanged"></div>											
 											<img ng-src={{answer.url}} alt="" height="50px">
 										</form>									
 									</div>	
@@ -93,4 +102,3 @@
 
 
 
-		

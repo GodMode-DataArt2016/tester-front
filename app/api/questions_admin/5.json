@@ -4,6 +4,7 @@
 	"type": "checkbox",
 	"UUID": "UUID",
 	"picture": "https://s-media-cache-ak0.pinimg.com/736x/05/63/cd/0563cd1937bea536929a85e33fa6bfbe.jpg",
+	"imageIncluded": true,
 	"allAnswers": [
 		{
 			"text":"answer 1",
