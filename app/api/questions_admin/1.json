@@ -2,20 +2,27 @@
 	"id":1,
 	"textDescription": "question № 1",
 	"type": "radio",
-	"UUID": "UUID",
 	"picture": "",
+	"imgId":"",
+	"answersAreImages": false,
+	"imageIncluded": false,
 	"allAnswers": [
 		{
 			"text":"answer 1",
-			"isDefault":true
+			"isDefault":true,
+			"isTrue":false,
+			"imgId":""
 		},
 		{
 			"text":"answer 2",
-			"isDefault":false
+			"isDefault":false,
+			"isTrue":false,
+			"imgId":""
 		},
 		{
 			"text":"answer 3",
-			"isDefault":false
-		}],
-	"answersAreImages": false
+			"isDefault":false,
+			"isTrue":false,
+			"imgId":""
+		}]
 }

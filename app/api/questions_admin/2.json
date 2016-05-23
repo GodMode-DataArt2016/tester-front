@@ -2,20 +2,27 @@
 	"id":2,
 	"textDescription": "question № 2",
 	"type": "checkbox",
-	"UUID": "UUID",
 	"picture": "",
+	"imgId":"",
+	"answersAreImages": false,
+	"imageIncluded": false,
 	"allAnswers": [
 		{
 			"text":"answer 1",
-			"isTrue":false
+			"isTrue":false,
+			"isDefault":false,
+			"imgId":""
 		},
 		{
 			"text":"answer 2",
-			"isTrue":true
+			"isTrue":true,
+			"isDefault":false,
+			"imgId":""
 		},
 		{
 			"text":"answer 3",
-			"isTrue":false
-		}],
-	"answersAreImages": false
+			"isTrue":false,
+			"isDefault":false,
+			"imgId":""
+		}]
 }

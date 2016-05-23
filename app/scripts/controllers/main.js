@@ -127,117 +127,10 @@ angular.module('testerFrontApp')
 
 
 angular.module('testerFrontApp')
-	.controller('NewtestCtrl', ['$scope', function($scope) {
-		var questions = [];
-		$scope.questions = questions;
-		
-		$scope.addQuestion = function(){
-			var newQuestion = {};
-			newQuestion.type = 'radio';
-			newQuestion.allAnswers = [];
-			$scope.questions.push(newQuestion);	
-		};
-		
-		$scope.addAnswer =  function(question){
-			var newAnswer = {};
-			newAnswer.text = '';
-			newAnswer.isTrue = false;
-			question.allAnswers.push(newAnswer);		
-		};
-		
-		$scope.removeAnswer = function(question, id){
-			console.log(question);
-			question.allAnswers.splice(id, 1);
-			console.log(question);
-		};
-		
-		$scope.removeQuestion = function (arr, id){
-				arr.splice(id, 1);	
-		};
-		
-		$scope.submitTest = function (){
-			var verified = true;
-			var submitObject = [];
-			
-			submitObject.testName = $scope.testName;
-			submitObject.startDate = $scope.startDate;
-			submitObject.endDate = $scope.endDate;
-			submitObject.isPublic = $scope.isPublic;
-			submitObject.questions = [];
-			
-			if(!(submitObject.testName && submitObject.startDate && submitObject.endDate)){
-				verified = false;	
-			}
-			
-			if(!$scope.questions.length){
-				verified = false;	
-			}
-			
-			$scope.questions.forEach(function(item){
-				var questionInfo = {};
-				questionInfo.id = item.id;
-				switch (item.type) {
-					case "radio":
-						if(item.allAnswers.length){
-							item.allAnswers.forEach(function(item){
-								if(!item) {
-									verified = false;	
-								}	
-							});
-							questionInfo.answers = item.allAnswers;
-							questionInfo.type = "radio";
-						} else {
-							verified = false;	
-						}
-					break;
-					case "text":
-						if(item.textAnswer){
-							questionInfo.answers = item.textAnswer;
-							questionInfo.type = "text";
-						} else {
-							verified = false;
-						}
-					break;
-					case "checkbox":
-						if(item.allAnswers.length){
-							item.allAnswers.forEach(function(item){
-								if(!item) {
-									verified = false;	
-								}	
-							});
-							questionInfo.answers = item.allAnswers;
-							questionInfo.type = "checkbox";
-						} else {
-							verified = false;	
-						}											
-					break;
-				}
-				if(questionInfo.answers){
-					submitObject.questions.push(questionInfo);
-				} else {
-					verified = false;				
-				}
-				
-			});
-			
-			if(verified){
-				alert("success");	
-			} else {
-				alert("provide all data");		
-			}
-		};
-}]);
-
-
-
-
-
-angular.module('testerFrontApp')
 	.controller('AdminTestCtrl', ['$scope', '$routeParams', 'TestAdmin', 'QuestionAdmin', 'SubmitAdmin', 'SubmitImage', function($scope, $routeParams, TestAdmin, Question, SubmitAdmin, SubmitImage) {
 		var questions = [];
 		$scope.questions = questions;
 		$scope.test = {};
-		$scope.images = [];
 		
 		if($routeParams.testId !== 'createnew'){
 			TestAdmin.get({ id: $routeParams.testId}, function(data) {
@@ -258,16 +151,25 @@ angular.module('testerFrontApp')
 		}				
 				
 		$scope.addQuestion = function(){
-			var newQuestion = {};
-			newQuestion.type = 'radio';
-			newQuestion.allAnswers = [];
+			var newQuestion = {				
+				type: "radio",	
+				textDescription: "",
+				answersAreImages: false,
+				imageIncluded: false,
+				picture: "",
+				imgId:101,
+				allAnswers: []
+			};
 			$scope.questions.push(newQuestion);	
 		};
 		
 		$scope.addAnswer =  function(question){
-			var newAnswer = {};
-			newAnswer.text = '';
-			newAnswer.isTrue = false;
+			var newAnswer = {
+				text: "",
+				isTrue: false,
+				isDefault: false,
+				imgId: ""
+			};
 			question.allAnswers.push(newAnswer);		
 		};
 		
@@ -290,43 +192,55 @@ angular.module('testerFrontApp')
 		
 		$scope.questionImgChanged = function(question, input){
 			if (input.files && input.files[0]) {
-				/*var reader = new FileReader();
-				
-				reader.onload = function (e) {
-					$scope.$apply(function () {
-						question.picture =  e.target.result;
-					});
-				}			
-				reader.readAsDataURL(input.files[0]);*/
 				$scope.$apply(function () {
 					question.picture = URL.createObjectURL(event.target.files[0]);
 				});
+				$scope.postImg(question, input);
 			}
 		};
 		
 		$scope.answerImgChanged = function(answer, input){
 			if (input.files && input.files[0]) {
-				/*var reader = new FileReader();
-				
-				reader.onload = function (e) {
-					$scope.$apply(function () {
-						answer.url =  e.target.result;
-					});
-				}			
-				reader.readAsDataURL(input.files[0]);
-				*/
 				$scope.$apply(function () {			
-					answer.url = URL.createObjectURL(event.target.files[0]);
-					
+					answer.url = URL.createObjectURL(event.target.files[0]);	
 				});
-				$scope.images.push(event.target.files[0]);			
+				//$scope.images.push(event.target.files[0]);
+				$scope.postImg(answer, input);
 			}
 		};
 		
+		$scope.postImg = function (model, input){
+			var formData = new FormData();
+			var file = input.files[0];
+			
+			if (!file.type.match('image.*')) {
+				
+			}
+			
+			formData.append('image', file, file.name);
+			var xhr = new XMLHttpRequest();			
+			xhr.open('POST', 'http://localhost:4500/api/saveimage', true);
+			
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					console.log(xhr);
+					var jsonResponse = JSON.parse(xhr.responseText);
+					if(jsonResponse.id){						
+						model.imgId = jsonResponse.id;	
+					}
+				} else {
+					alert('An error occurred!');
+				}
+			};			
+			xhr.send(formData);	
+		}
+		
 		$scope.submitTest = function (){
 			var verified = true;
+			
 			var submitObject = {};
 			
+			submitObject.id = $scope.test.id;
 			submitObject.testName = $scope.test.testName;
 			submitObject.startDate = $scope.test.startDate;
 			submitObject.endDate = $scope.test.endDate;
@@ -347,40 +261,45 @@ angular.module('testerFrontApp')
 				switch (item.type) {
 					case "radio":
 						if(item.allAnswers.length){
-							item.allAnswers.forEach(function(item){
+							/*item.allAnswers.forEach(function(item){
 								if(!item) {
 									verified = false;	
 								}	
-							});
-							questionInfo.answers = item.allAnswers;
-							questionInfo.type = "radio";
+							});*/
+							
+							questionInfo = item;
+							
+							
+							
 						} else {
 							verified = false;	
 						}
 					break;
 					case "text":
 						if(item.textAnswer){
-							questionInfo.answers = item.textAnswer;
-							questionInfo.type = "text";
+							//questionInfo.answers = item.textAnswer;
+							//questionInfo.type = "text";
+							questionInfo = item;
 						} else {
 							verified = false;
 						}
 					break;
 					case "checkbox":
 						if(item.allAnswers.length){
-							item.allAnswers.forEach(function(item){
+							/*item.allAnswers.forEach(function(item){
 								if(!item) {
 									verified = false;	
 								}	
-							});
-							questionInfo.answers = item.allAnswers;
-							questionInfo.type = "checkbox";
+							});*/
+							//questionInfo.answers = item.allAnswers;
+							//questionInfo.type = "checkbox";
+							questionInfo = item;
 						} else {
 							verified = false;	
 						}											
 					break;
 				}
-				if(questionInfo.answers){
+				if(questionInfo.allAnswers){
 					submitObject.questions.push(questionInfo);
 				} else {
 					verified = false;				
@@ -395,9 +314,35 @@ angular.module('testerFrontApp')
 				alert("provide all data");		
 			}
 		};
+		
+		$scope.verifyQuestion = function (question){
+			var verified = true;
+			
+			if(question.answersAreImages) {
+				question.question.forEach(function(item){
+					if(!item.imgId)	verified = false;
+				});
+			} else {
+				question.question.forEach(function(item){
+					if(!item.text)	verified = false;
+				});	
+			}	
 
+				
+				
+			questionInfo.answers = [];
+			questionInfo.type = item.type;
+			questionInfo.textDescription = item.textDescription || "";
+			questionInfo.answersAreImages = item.answersAreImages || false;
+			questionInfo.imageIncluded = item.imageIncluded || false;
+			questionInfo.imgId = item.imgId || "";	
+			
+			
+			return verified;
+		};
+		
 		$scope.sendTestData = function (obj){
-			$scope.saveObj = new SubmitAdmin(); 
+			$scope.saveObj = new SubmitAdmin({id: obj.id}); 
 			
 			$scope.saveObj.data = obj;
 			
@@ -409,47 +354,4 @@ angular.module('testerFrontApp')
 			//$scope.sendTestImg();
 		};
 		
-		$scope.sendTestImg = function (obj){
-				
-			var images = $scope.images;
-
-			/*images.forEach(function (file) {
-				$scope.saveObj = new SubmitImage(); 
-				
-				var formData = new FormData();
-				formData.append('photos[]', file, file.name);
-				
-				
-				
-				$scope.saveObj.data = formData;
-				SubmitImage.save($scope.saveObj, function() {
-					
-					console.log("saved");
-				});
-			});	*/
-					
-			for (var i = 0; i < images.length; i++) { // test save to local.
-				var formData = new FormData();
-				var file = images[i];
-				
-				// Check the file type.
-				if (!file.type.match('image.*')) {
-					continue;
-				}
-				
-				// Add the file to the request.
-				formData.append('photos[]', file, file.name);
-				var xhr = new XMLHttpRequest();			
-				xhr.open('POST', 'http://localhost:4500/api/saveimage', true);
-				
-				xhr.onload = function () {
-					if (xhr.status === 200) {
-						// File(s) uploaded.
-					} else {
-						alert('An error occurred!');
-					}
-				};			
-				xhr.send(formData);
-			}
-		};
 }]);

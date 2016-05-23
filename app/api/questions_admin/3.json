@@ -2,21 +2,27 @@
 	"id":3,
 	"textDescription": "question № 3",
 	"type": "checkbox",
-	"UUID": "UUID",
 	"picture": "http://40.media.tumblr.com/tumblr_lxsx4pAafb1qfu4tho1_500.png",
+	"imgId":101,
+	"answersAreImages": false,
 	"imageIncluded": true,
 	"allAnswers": [
 		{
 			"text":"answer 1",
-			"isTrue":false
+			"isTrue":false,
+			"isDefault":false,
+			"imgId":""
 		},
 		{
 			"text":"answer 2",
-			"isTrue":true
+			"isTrue":true,
+			"isDefault":false,
+			"imgId":""
 		},
 		{
 			"text":"answer 3",
-			"isTrue":false
-		}],
-	"answersAreImages": false
+			"isTrue":false,
+			"isDefault":false,
+			"imgId":""
+		}]
 }

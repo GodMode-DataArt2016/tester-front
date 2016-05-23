@@ -41,11 +41,11 @@ testerFrontServices.factory("QuestionAdmin", function($resource) {
 });
 
 testerFrontServices.factory("SubmitUser", function($resource) {
-	return $resource("api/submittests/:id.json");
+	return $resource("http://somebackendaddress/api/submittests/:id.json");
 });
 
 testerFrontServices.factory("SubmitAdmin", function($resource) {
-	return $resource("api/submittests_admin/:id.json");
+	return $resource("http://somebackendaddress/api/admin/test/:id.json", {id: '@id'});
 });
 
 testerFrontServices.factory("SubmitImage", function($resource) {
