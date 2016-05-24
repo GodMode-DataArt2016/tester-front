@@ -6,6 +6,7 @@
 	"imgId":101,
 	"answersAreImages": false,
 	"imageIncluded": true,
+	"textAnswer": "",
 	"allAnswers": [
 		{
 			"text":"answer 1",

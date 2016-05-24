@@ -24,7 +24,9 @@ angular.module('testerFrontApp')
 	.controller('TestCtrl', ['$scope', '$routeParams', 'Test', 'Question', 'SubmitUser', function($scope, $routeParams, Test, Question, SubmitUser) {
 		var questions = [];
 		$scope.questions = questions;
-		$scope.userForm = {};
+		$scope.userForm = {
+			unconfirmed: false	
+		};
 		
 		Test.get({ id: $routeParams.testId}, function(data) {
 			$scope.test = data;
@@ -52,62 +54,45 @@ angular.module('testerFrontApp')
 		$scope.submitArray = null;
 		
 		$scope.submitAnswer = function() {
-			var verified = true;
-			
+			var verified = true;			
 			var submitObject = {};
+			var status = "";
 			
 			var userForm = $scope.userForm;
-			submitObject.userForm = userForm;			
+			submitObject.userForm = userForm;
+			submitObject.id = $scope.test.id;
+			submitObject.testName = $scope.test.testName;			
 			submitObject.questions = [];
 			
+			// check if user form data is filled
 			if(!(userForm.name && userForm.surname && userForm.phone && userForm.email)){
 				verified = false;
+				status+= "Fill in user data. ";
+				$scope.userForm.unconfirmed = true;
+			} else {
+				$scope.userForm.unconfirmed = false;	
 			}
-						
-			$scope.questions.forEach(function(item){
-				var answerInfo = {};
-				var cbVerified = false;
-				answerInfo.id = item.id;
-				switch (item.type) {
-					case "radio":
-						answerInfo.answer = item.radioAnswer;					
-					
-						for(var index in item.allAnswers){
-							if(item.allAnswers[index].isDefault){ 
-								cbVerified = true;
-							}
-						}
-						if(cbVerified){
-							answerInfo.answer = item.allAnswers;	
-						} else {
-							verified = false;	
-						}	
-					break;
-					case "text":
-						answerInfo.answer = item.textAnswer;
-					break;
-					case "checkbox":
-						for(var index in item.allAnswers){
-							if(item.allAnswers[index].isTrue){ 
-								cbVerified = true;
-							}
-						}
-						if(cbVerified){
-							answerInfo.answer = item.allAnswers;	
-						} else {
-							verified = false;	
-						}											
-					break;
+			
+			// check if all questions are correct
+			var questionsVeryfy = true;
+			$scope.questions.forEach(function(item){	
+				if($scope.verifyQuestion(item)){
+					submitObject.questions.push(item);
+					item.unconfirmed = false;					
+				} else {					
+					questionsVeryfy = false;
+					item.unconfirmed = true;
 				}
-				if(answerInfo.answer){
-					submitObject.questions.push(answerInfo);
-				} else {
-					verified = false;				
-				}
-				
 			});
-					
+			
+			if(!questionsVeryfy){
+				verified = false;
+				status+= "Answer all the questions. ";				
+			}
+			
+			// final verification check		
 			if(verified){
+				status = "Success";
 				$scope.saveObj = new SubmitUser();
 				
 				$scope.saveObj.data = submitObject;
@@ -117,12 +102,46 @@ angular.module('testerFrontApp')
 					alert("saved");
 				});	
 				
-				alert("success");	
+				alert(status);	
 			} else {
-				alert("answer all the questions");		
+				alert(status);		
 			}
-			console.log(submitObject);
 		};	
+		
+		$scope.verifyQuestion = function (question){
+			var verified = true;
+		
+			
+			if(question.type === "text" && !question.textAnswer) {// if type is text check that answer is present,
+				verified = false;	
+			} else {
+				// check if correct answers chosen	
+				if(!$scope.verifyAnswer(question)){
+					verified = false;				
+				}					
+			}
+			
+			return verified;
+		};
+		
+		$scope.verifyAnswer = function (question){
+			var answersChosen = false;
+			if(question.type === "radio"){
+				question.allAnswers.forEach(function(item){
+					if(item.isDefault){
+						answersChosen = true;	
+					}	
+				});	
+			} else if(question.type === "checkbox"){
+				question.allAnswers.forEach(function(item){
+					if(item.isTrue){
+						answersChosen = true;	
+					}	
+				});	
+			}
+			
+			return answersChosen;
+		};
 }]);
 
 
@@ -195,7 +214,7 @@ angular.module('testerFrontApp')
 				$scope.$apply(function () {
 					question.picture = URL.createObjectURL(event.target.files[0]);
 				});
-				$scope.postImg(question, input);
+				$scope.postImg2(question, input);
 			}
 		};
 		
@@ -205,7 +224,7 @@ angular.module('testerFrontApp')
 					answer.url = URL.createObjectURL(event.target.files[0]);	
 				});
 				//$scope.images.push(event.target.files[0]);
-				$scope.postImg(answer, input);
+				$scope.postImg2(answer, input);
 			}
 		};
 		
@@ -235,6 +254,26 @@ angular.module('testerFrontApp')
 			xhr.send(formData);	
 		}
 		
+		$scope.postImg2 = function (model, input){
+			var formData = new FormData();
+			var file = input.files[0];
+
+			formData.append('image', file, file.name);
+			
+			
+			SubmitImage.create({}, formData).$promise.then(function (res) {
+					//var jsonResponse = JSON.parse(res.responseText);
+					if(res.id){						
+						model.imgId = res.id;	
+					}
+				}).catch(function (err) {
+					alert('An error occurred!');
+						console.log(err);
+			});
+			
+			
+		}
+		
 		$scope.submitTest = function (){
 			var verified = true;
 			
@@ -255,58 +294,21 @@ angular.module('testerFrontApp')
 				verified = false;	
 			}
 			
-			$scope.questions.forEach(function(item){
-				var questionInfo = {};
-				questionInfo.id = item.id;
-				switch (item.type) {
-					case "radio":
-						if(item.allAnswers.length){
-							/*item.allAnswers.forEach(function(item){
-								if(!item) {
-									verified = false;	
-								}	
-							});*/
-							
-							questionInfo = item;
-							
-							
-							
-						} else {
-							verified = false;	
-						}
-					break;
-					case "text":
-						if(item.textAnswer){
-							//questionInfo.answers = item.textAnswer;
-							//questionInfo.type = "text";
-							questionInfo = item;
-						} else {
-							verified = false;
-						}
-					break;
-					case "checkbox":
-						if(item.allAnswers.length){
-							/*item.allAnswers.forEach(function(item){
-								if(!item) {
-									verified = false;	
-								}	
-							});*/
-							//questionInfo.answers = item.allAnswers;
-							//questionInfo.type = "checkbox";
-							questionInfo = item;
-						} else {
-							verified = false;	
-						}											
-					break;
+			// check if all questions are correct
+			var questionsVeryfy = true;
+			$scope.questions.forEach(function(item){	
+				if($scope.verifyQuestion(item)){
+					submitObject.questions.push(item);	
+				} else {					
+					questionsVeryfy = false;					
 				}
-				if(questionInfo.allAnswers){
-					submitObject.questions.push(questionInfo);
-				} else {
-					verified = false;				
-				}
-				
 			});
 			
+			if(!questionsVeryfy){
+				verified = false;	
+			}
+			
+			// final verification check
 			if(verified){
 				$scope.sendTestData(submitObject);
 				//alert("success");	
@@ -318,27 +320,60 @@ angular.module('testerFrontApp')
 		$scope.verifyQuestion = function (question){
 			var verified = true;
 			
-			if(question.answersAreImages) {
-				question.question.forEach(function(item){
-					if(!item.imgId)	verified = false;
-				});
+			if(question.imageIncluded && !question.imgId) {
+				verified = false;	
+			}
+			
+			if(!question.textDescription){
+				verified = false;	
+			}
+			 
+			if(question.type === "text" && !question.textAnswer) {// if type is text check that answer is present,
+				verified = false;	
 			} else {
-				question.question.forEach(function(item){
-					if(!item.text)	verified = false;
-				});	
-			}	
-
+				// check if there is more than 1 answer
+				if(question.allAnswers.length < 2) {
+					verified = false;	
+				}
 				
+				// check if answers are filled or images are selected
+				if(question.answersAreImages) {
+					question.allAnswers.forEach(function(item){
+						if(!item.imgId)	verified = false;
+					});
+				} else {
+					question.allAnswers.forEach(function(item){
+						if(!item.text)	verified = false;
+					});	
+				}
 				
-			questionInfo.answers = [];
-			questionInfo.type = item.type;
-			questionInfo.textDescription = item.textDescription || "";
-			questionInfo.answersAreImages = item.answersAreImages || false;
-			questionInfo.imageIncluded = item.imageIncluded || false;
-			questionInfo.imgId = item.imgId || "";	
-			
-			
+				// check if correct answers chosen	
+				console.log(question);
+				if(!$scope.verifyAnswer(question)){
+					verified = false;	
+				}					
+			}
+						
 			return verified;
+		};
+		
+		$scope.verifyAnswer = function (question){
+			var answersChosen = false;
+			if(question.type === "radio"){
+				question.allAnswers.forEach(function(item){
+					if(item.isDefault){
+						answersChosen = true;	
+					}	
+				});	
+			} else if(question.type === "checkbox"){
+				question.allAnswers.forEach(function(item){
+					if(item.isTrue){
+						answersChosen = true;	
+					}	
+				});	
+			}
+					
+			return answersChosen;
 		};
 		
 		$scope.sendTestData = function (obj){

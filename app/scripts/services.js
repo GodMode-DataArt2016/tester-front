@@ -41,15 +41,26 @@ testerFrontServices.factory("QuestionAdmin", function($resource) {
 });
 
 testerFrontServices.factory("SubmitUser", function($resource) {
-	return $resource("http://somebackendaddress/api/submittests/:id.json");
+	return $resource("http://somebackendaddress/api/tests/:id.json");
 });
 
 testerFrontServices.factory("SubmitAdmin", function($resource) {
 	return $resource("http://somebackendaddress/api/admin/test/:id.json", {id: '@id'});
 });
 
+/*
 testerFrontServices.factory("SubmitImage", function($resource) {
 	return $resource("http://localhost:4500/api/saveimage");
+});*/
+
+testerFrontServices.factory("SubmitImage", function($resource) {
+	return $resource("http://localhost:4500/api/saveimage",{},{
+		create: {
+            method: "POST",
+            transformRequest: angular.identity,
+            headers: { 'Content-Type': undefined }
+        }			
+	});
 });
 
 testerFrontServices.directive('customOnChange', function() {
@@ -61,14 +72,8 @@ testerFrontServices.directive('customOnChange', function() {
 		},
 		replace: true,		
 		link: function (scope, element, attrs) {
-			element.bind('change', function(changeEvent) {
-					console.log(element);
-
-				//scope.reverse({elementId: '123111'});			
+			element.bind('change', function(changeEvent) {	
 				scope.changefunc()(scope.data,element[0]);	
-				//scope.$eval(attrs.customOnChange);
-				//scope.$eval(attrs.customOnChange).apply(element);
-				//element.$eval(attrs.customOnChange);
 			});
 		},
 		template: [

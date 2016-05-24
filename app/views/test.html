@@ -1,12 +1,12 @@
 <div class="container">
-	<div>
+	<div ng-class="{ 'bg-danger': userForm.unconfirmed}">
 		<form novalidate class="simple-form">
 			<input type="text" class="form-control" ng-model="userForm.name" placeholder="Name" /><br />
 			<input type="text" class="form-control" ng-model="userForm.surname" placeholder="Surname" /><br />
 			<input type="text" class="form-control" ng-model="userForm.phone" placeholder="Phone" /><br />
 			<input type="text" class="form-control" ng-model="userForm.email" placeholder="E-mail" /><br />	
 		</form>
-	<div>
+	</div>
 	<div ng-model="test">
 		<h1>Test name -> {{test.testName}}</h1>
 	</div>
@@ -14,7 +14,7 @@
 		<table class="table table-hover">
 			<tr ng-repeat="question in questions">
 				<td>
-					<div>{{question.textDescription}}</div>
+					<div ng-class="{ 'bg-danger': question.unconfirmed}">{{question.textDescription}}</div>
 					<div ng-if="question.picture != ''">
 						<img ng-src={{question.picture}} alt="question" height="200px">
 					</div>
