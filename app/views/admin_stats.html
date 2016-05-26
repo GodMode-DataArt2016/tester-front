@@ -1,0 +1,55 @@
+<div class="container">
+	<div >
+		<h1>Test name -> {{test.testName}}</h1>
+	</div>
+	<div ng-model="test.users">
+		<table class="table table-hover">
+			<tr>
+				<td>
+					<button ng-click="order('name')">name</button>					
+				</td>
+				<td>
+					<button ng-click="order('surname')">surname</button>						
+				</td>
+				<td>
+					<button ng-click="order('phone')">phone</button>						
+				</td>
+				<td>
+					<button ng-click="order('email')">email</button>						
+				</td>
+				<td>
+					<button ng-click="order('rating')">rating</button>						
+				</td>
+				<td ng-repeat="question in test.questions">
+					<button ng-click="order(question.name)">{{question.name}}</button>						
+				</td>			
+			</tr>
+			<tr ng-repeat="user in test.users | orderBy:predicate:reverse">
+				<td>
+					{{user.name}}	
+				</td>
+				<td>
+					{{user.surname}}	
+				</td>
+				<td>
+					{{user.phone}}	
+				</td>
+				<td>
+					{{user.email}}	
+				</td>
+				<td>
+					{{user.rating}}	
+				</td>
+				<td ng-repeat="question in test.questions">
+					<div ng-class="{ 'bg-danger': !user[question.name]}">
+						{{user[question.name]}}	
+					</div>
+				</td>
+				
+			</tr>
+		</table>
+	</div>
+</div>
+
+
+

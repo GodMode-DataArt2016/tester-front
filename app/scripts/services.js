@@ -40,6 +40,12 @@ testerFrontServices.factory("QuestionAdmin", function($resource) {
   });
 });
 
+testerFrontServices.factory("Statistics", function($resource) {
+  return $resource("api/statistics/:id.json", {}, {
+    query: { method: "GET", isArray: true }
+  });
+});
+
 testerFrontServices.factory("SubmitUser", function($resource) {
 	return $resource("http://somebackendaddress/api/tests/:id.json");
 });
@@ -79,5 +85,20 @@ testerFrontServices.directive('customOnChange', function() {
 		template: [
 			  "<input type='file' id='file-select' name='image'/>"
 		].join("")
+  };
+});
+
+
+testerFrontServices.filter('orderObjectBy', function() {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+      return (a[field] > b[field] ? 1 : -1);
+    });
+    if(reverse) filtered.reverse();
+    return filtered;
   };
 });

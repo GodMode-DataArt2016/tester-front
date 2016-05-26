@@ -55,14 +55,9 @@ angular.module('testerFrontApp')
 		
 		$scope.submitAnswer = function() {
 			var verified = true;			
-			var submitObject = {};
 			var status = "";
 			
 			var userForm = $scope.userForm;
-			submitObject.userForm = userForm;
-			submitObject.id = $scope.test.id;
-			submitObject.testName = $scope.test.testName;			
-			submitObject.questions = [];
 			
 			// check if user form data is filled
 			if(!(userForm.name && userForm.surname && userForm.phone && userForm.email)){
@@ -77,7 +72,6 @@ angular.module('testerFrontApp')
 			var questionsVeryfy = true;
 			$scope.questions.forEach(function(item){	
 				if($scope.verifyQuestion(item)){
-					submitObject.questions.push(item);
 					item.unconfirmed = false;					
 				} else {					
 					questionsVeryfy = false;
@@ -95,10 +89,12 @@ angular.module('testerFrontApp')
 				status = "Success";
 				$scope.saveObj = new SubmitUser();
 				
+				var submitObject = $scope.transformTest();
 				$scope.saveObj.data = submitObject;
 				
-				SubmitUser.save($scope.saveObj, function() {
-					
+				console.log(submitObject);
+				
+				SubmitUser.save($scope.saveObj, function() {				
 					alert("saved");
 				});	
 				
@@ -112,8 +108,10 @@ angular.module('testerFrontApp')
 			var verified = true;
 		
 			
-			if(question.type === "text" && !question.textAnswer) {// if type is text check that answer is present,
-				verified = false;	
+			if(question.type === "text") {// if type is text check that answer is present,
+				if(!question.textAnswer){
+					verified = false;	
+				}
 			} else {
 				// check if correct answers chosen	
 				if(!$scope.verifyAnswer(question)){
@@ -142,6 +140,68 @@ angular.module('testerFrontApp')
 			
 			return answersChosen;
 		};
+		
+		$scope.transformTest = function (){
+			var submitObject = {};
+			
+			submitObject.userForm = $scope.transformUserform($scope.userForm);
+			submitObject.id = $scope.test.id;
+			submitObject.testName = $scope.test.testName;
+
+			
+			submitObject.questions = [];
+
+			$scope.questions.forEach(function(item){	
+				submitObject.questions.push($scope.transformQuestion(item));
+			});
+			
+			return submitObject;
+		};
+		
+		$scope.transformUserform = function (form){
+			return {
+				name:form.name,
+				surname:form.surname,
+				phone:form.phone,
+				email:form.email,			
+			};		
+		}
+		
+		$scope.transformQuestion = function (question){
+			var submitObj = {
+				id: question.id,
+				textDescription: question.textDescription,			
+			};
+			
+			if(question.type === "text") {
+				submitObj.textAnswer = question.textAnswer;	
+			} else {
+				submitObj.allAnswers = $scope.transformAnswers(question);
+			}
+			
+			return submitObj;
+		};
+		
+		$scope.transformAnswers = function (question){
+			var submitObj = [];
+				
+			if(question.type === "radio"){
+				question.allAnswers.forEach(function(item){
+					submitObj.push({
+						text: item.text,
+						isDefault: item.isDefault,	
+					});
+				});	
+			} else if(question.type === "checkbox"){
+				question.allAnswers.forEach(function(item){
+					submitObj.push({
+						text: item.text,
+						isTrue: item.isTrue,	
+					});
+				});	
+			}
+			return submitObj;	
+		};
 }]);
 
 
@@ -149,7 +209,9 @@ angular.module('testerFrontApp')
 	.controller('AdminTestCtrl', ['$scope', '$routeParams', 'TestAdmin', 'QuestionAdmin', 'SubmitAdmin', 'SubmitImage', function($scope, $routeParams, TestAdmin, Question, SubmitAdmin, SubmitImage) {
 		var questions = [];
 		$scope.questions = questions;
-		$scope.test = {};
+		$scope.test = {
+			unconfirmed: false	
+		};
 		
 		if($routeParams.testId !== 'createnew'){
 			TestAdmin.get({ id: $routeParams.testId}, function(data) {
@@ -177,7 +239,8 @@ angular.module('testerFrontApp')
 				imageIncluded: false,
 				picture: "",
 				imgId:101,
-				allAnswers: []
+				allAnswers: [],
+				unconfirmed: false
 			};
 			$scope.questions.push(newQuestion);	
 		};
@@ -187,7 +250,8 @@ angular.module('testerFrontApp')
 				text: "",
 				isTrue: false,
 				isDefault: false,
-				imgId: ""
+				imgId: "",
+				unconfirmed: false
 			};
 			question.allAnswers.push(newAnswer);		
 		};
@@ -288,6 +352,9 @@ angular.module('testerFrontApp')
 			
 			if(!(submitObject.testName && submitObject.startDate && submitObject.endDate)){
 				verified = false;
+				$scope.test.unconfirmed = true;
+			} else {
+				$scope.test.unconfirmed = false;	
 			}
 			
 			if(!$scope.questions.length){
@@ -298,9 +365,11 @@ angular.module('testerFrontApp')
 			var questionsVeryfy = true;
 			$scope.questions.forEach(function(item){	
 				if($scope.verifyQuestion(item)){
-					submitObject.questions.push(item);	
+					submitObject.questions.push(item);
+					item.unconfirmed = false;
 				} else {					
-					questionsVeryfy = false;					
+					questionsVeryfy = false;
+					item.unconfirmed = true;					
 				}
 			});
 			
@@ -328,8 +397,10 @@ angular.module('testerFrontApp')
 				verified = false;	
 			}
 			 
-			if(question.type === "text" && !question.textAnswer) {// if type is text check that answer is present,
-				verified = false;	
+			if(question.type === "text") {// if type is text check that answer is present,
+				if(!question.textAnswer) {
+					verified = false;							
+				}
 			} else {
 				// check if there is more than 1 answer
 				if(question.allAnswers.length < 2) {
@@ -389,4 +460,20 @@ angular.module('testerFrontApp')
 			//$scope.sendTestImg();
 		};
 		
+}]);
+
+
+angular.module('testerFrontApp')
+	.controller('AdminStatsCtrl', ['$scope', '$routeParams', 'Statistics', function($scope, $routeParams, Statistics) {
+
+		Statistics.get({ id: $routeParams.statsId}, function(data) {
+			$scope.test = data;
+			
+			
+		});	
+		
+		$scope.order = function(predicate) {
+			$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+			$scope.predicate = predicate;
+		};	
 }]);

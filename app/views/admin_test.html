@@ -1,28 +1,30 @@
 <div class="container">
-	<div>	
-		<input type="text" class="form-control" ng-model="test.testName" placeholder="type test name" /><br />		
-		<div class="checkbox">
-			<input type="checkbox" name="question" ng-model="test.isPublic">{{test.isPublic?'Public':'not public'}}
-		</div>		
-		<div class="row">
-			<div class="col-sm-4">
-				<form>
-					Start date:
-					<input type="date" name="startday" ng-model="test.startDate">
-				</form>
-			</div>
-			<div class="col-sm-4">
-				<form>
-					End date:
-					<input type="date" name="endday"  ng-model="test.endDate">
-				</form>
+	<div>
+		<div  ng-class="{ 'bg-danger': test.unconfirmed}">
+			<input type="text" class="form-control" ng-model="test.testName" placeholder="type test name" /><br />		
+			<div class="checkbox">
+				<input type="checkbox" name="question" ng-model="test.isPublic">{{test.isPublic?'Public':'not public'}}
+			</div>		
+			<div class="row">
+				<div class="col-sm-4">
+					<form>
+						Start date:
+						<input type="date" name="startday" ng-model="test.startDate">
+					</form>
+				</div>
+				<div class="col-sm-4">
+					<form>
+						End date:
+						<input type="date" name="endday"  ng-model="test.endDate">
+					</form>
+				</div>
 			</div>
 		</div>
 		<div ng-model="questions">
 			<table class="table table-hover">
 				<tr ng-repeat="question in questions">
 					<td>
-						<label>Question # {{$index}}</label>
+						<label ng-class="{ 'bg-danger': question.unconfirmed}">Question # {{$index}}</label>
 						<button class="btn btn-danger " ng-click="removeQuestion(questions,$index)" aria-label="Remove">X</button>
 						<input type="text" class="form-control" ng-model="question.textDescription" placeholder="type your question here" />
 						<form role="form">

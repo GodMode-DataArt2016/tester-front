@@ -50,6 +50,11 @@ angular
 		  controller: 'AdminTestCtrl',
 		  controllerAs: 'admintest'
       })
+	  .when('/admin/statistics/:statsId', {
+		  templateUrl: 'views/admin_stats.html',
+		  controller: 'AdminStatsCtrl',
+		  controllerAs: 'admintest'
+      })
       .otherwise({
         redirectTo: '/'
       });
