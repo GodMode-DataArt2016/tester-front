@@ -1,7 +1,8 @@
 [
 	{
 		"id":1,
-		"name": "firstTest",
+		"isAvailable": true,
+		"testName": "firstTest",
 		"privateTest": false,
 		"startDate": 1461785956668,
 		"endDate": 1461785959999,
@@ -10,7 +11,8 @@
 	},
 	{
 		"id":2,
-		"name": "firstTest2",
+		"isAvailable": true,
+		"testName": "firstTest2",
 		"privateTest": false,
 		"startDate": 1461785956668,
 		"endDate": 1461785959999,
@@ -19,11 +21,33 @@
 	},
 	{
 		"id":3,
-		"name": "firstTest3",
+		"isAvailable": true,
+		"testName": "firstTest3",
 		"privateTest": false,
 		"startDate": 1461785956668,
 		"endDate": 1461785959999,
 		"questions": [7,8,9],
 		"answers": [7,8,9]
+	},
+	{
+		"id":4,
+		"isAvailable": false,
+		"availabilityText": "This test is already closed",
+		"testName": "firstTest4",
+		"isPublic": true,
+		"startDate": 1461785956668,
+		"endDate": 1461785959999,
+		"questions": []
+	},
+	{
+		"id":5,
+		"isAvailable": false,
+		"availabilityText": "This will be available on 'some date'",
+		"testName": "firstTest4",
+		"isPublic": true,
+		"startDate": 1461785956668,
+		"endDate": 1461785959999,
+		"questions": []
 	}
+
 ]

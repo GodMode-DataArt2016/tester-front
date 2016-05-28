@@ -26,7 +26,6 @@
 							</div>
 							<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
 						</div>
-						<div style="color:Grey;">test output = {{question.allAnswers}}</div>
 					</form>
 					<form role="form" ng-if="question.type == 'radio'">
 						<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
@@ -36,11 +35,9 @@
 							</div>
 							<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
 						</div>
-						<div style="color:Grey;">test output = {{question.allAnswers}}</div>
 					</form>	
 					<div ng-if="question.type == 'text'">
 						<input type="text" ng-model="question.textAnswer" class="form-control" placeholder="Type answer here">
-						<div style="color:Grey;">test output = {{question.textAnswer}}</div>
 					</div>	
 				</td>
 			</tr>
