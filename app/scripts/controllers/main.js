@@ -214,7 +214,7 @@ angular.module('testerFrontApp')
 		};
 		
 		if($routeParams.testId !== 'createnew'){
-			TestAdmin.get({ id: $routeParams.testId}, function(data) {
+			TestAdmin.get({ id: $routeParams.testId}, function(data) {				
 				$scope.test = data;
 				$scope.test.startDate = new Date(data.startDate);
 				$scope.test.endDate = new Date(data.endDate);
@@ -238,7 +238,7 @@ angular.module('testerFrontApp')
 				answersAreImages: false,
 				imageIncluded: false,
 				picture: "",
-				imgId:101,
+				imgId: "",
 				allAnswers: [],
 				unconfirmed: false
 			};
@@ -384,6 +384,8 @@ angular.module('testerFrontApp')
 			} else {
 				alert("provide all data");		
 			}
+			
+			return verified;
 		};
 		
 		$scope.verifyQuestion = function (question){
@@ -410,7 +412,9 @@ angular.module('testerFrontApp')
 				// check if answers are filled or images are selected
 				if(question.answersAreImages) {
 					question.allAnswers.forEach(function(item){
-						if(!item.imgId)	verified = false;
+						if(!item.imgId){
+							verified = false;
+						}
 					});
 				} else {
 					question.allAnswers.forEach(function(item){
@@ -419,7 +423,7 @@ angular.module('testerFrontApp')
 				}
 				
 				// check if correct answers chosen	
-				console.log(question);
+				//console.log(question);
 				if(!$scope.verifyAnswer(question)){
 					verified = false;	
 				}					

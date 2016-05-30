@@ -22,7 +22,7 @@ testerFrontServices.factory("Test", function($resource) {
 });
 
 testerFrontServices.factory("TestAdmin", function($resource) {
-  return $resource("api/tests_admin/:id.json", {}, {
+  return $resource("api/admin/tests/:id.json", {}, {
     query: { method: "GET", isArray: true }
   });
 });
@@ -35,13 +35,13 @@ testerFrontServices.factory("Question", function($resource) {
 });
 
 testerFrontServices.factory("QuestionAdmin", function($resource) {
-  return $resource("api/questions_admin/:id.json", {}, {
+  return $resource("api/admin/questions/:id.json", {}, {
     query: { method: "GET", isArray: true }
   });
 });
 
 testerFrontServices.factory("Statistics", function($resource) {
-  return $resource("api/statistics/:id.json", {}, {
+  return $resource("api/admin/statistics/:id.json", {}, {
     query: { method: "GET", isArray: true }
   });
 });
