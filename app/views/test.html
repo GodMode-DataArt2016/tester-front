@@ -18,14 +18,14 @@
 					<td>
 						<div ng-class="{ 'bg-danger': question.unconfirmed}">{{question.textDescription}}</div>
 						<div ng-if="question.picture != ''">
-							<img ng-src={{question.picture}} alt="question" height="200px" class="img-thumbnail">
+							<img ng-src={{question.picture}} alt="question" class="img-thumbnail question_img">
 						</div>
 						<form role="form" ng-if="question.type == 'checkbox'">
 							<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
 								<label>
 									<input type="checkbox" ng-model="answer.isTrue">{{!question.answersAreImages ? answer.text: ""}}
 									<div ng-if="question.answersAreImages">
-										<img ng-src={{answer.url}} alt="answer.url" height="50px" class="img-thumbnail">
+										<img ng-src={{answer.url}} alt="answer.url" class="img-thumbnail answer_img">
 									</div>
 								</label>
 							</div>
@@ -36,7 +36,7 @@
 									<input type="radio" ng-click="setDefault(question.allAnswers,answer)" name="answerss" ng-checked="answer.isDefault">
 									{{!question.answersAreImages ? answer.text: ""}}
 									<div ng-if="question.answersAreImages">
-										<img ng-src={{answer.url}} alt="answer.url" height="50px" class="img-thumbnail">
+										<img ng-src={{answer.url}} alt="answer.url" class="img-thumbnail answer_img">
 									</div>
 								</label>
 							</div>

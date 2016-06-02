@@ -120,3 +120,11 @@ html, body {
 .spacer {
     margin-top: 50px; /* define margin as you see fit */
 }
+
+.question_img {
+	max-height:250px;
+}
+
+.answer_img {
+	max-height:70px;
+}

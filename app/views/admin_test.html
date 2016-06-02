@@ -57,7 +57,7 @@
 						<div ng-if="question.imageIncluded">
 							<form id="file-form" action="" method="POST">
 								<div class="directive" custom-on-change data="question" name="image" changefunc="questionImgChanged"></div>
-								<img ng-src={{question.picture}} alt="" height="50px">
+								<img ng-src={{question.picture}} alt="" class="img-thumbnail question_img">
 							</form>
 						</div>
 						<div ng-if="question.type == 'checkbox'">						
@@ -73,7 +73,7 @@
 										<div ng-if="question.answersAreImages">
 											<form id="file-form" action="" method="POST">
 												<div class="directive" custom-on-change data="answer" name="photos[]" changefunc="answerImgChanged"></div>											
-												<img ng-src={{answer.url}} alt="" height="50px">
+												<img ng-src={{answer.url}} alt="" class="img-thumbnail answer_img">
 											</form>
 										</div>							
 										<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" />
@@ -96,7 +96,7 @@
 										<div ng-if="question.answersAreImages">
 											<form id="file-form" action="" method="POST">
 												<div class="directive" custom-on-change data="answer" name="photos[]" changefunc="answerImgChanged"></div>											
-												<img ng-src={{answer.url}} alt="" height="50px">
+												<img ng-src={{answer.url}} alt="" class="img-thumbnail answer_img">
 											</form>									
 										</div>	
 										<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" />
