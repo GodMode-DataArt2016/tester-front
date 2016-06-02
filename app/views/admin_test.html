@@ -1,10 +1,7 @@
 <div class="container">
 	<div>
 		<div  ng-class="{ 'bg-danger': test.unconfirmed}">
-			<input type="text" class="form-control" ng-model="test.testName" placeholder="type test name" /><br />		
-			<div class="checkbox">
-				<input type="checkbox" name="question" ng-model="test.isPublic">{{test.isPublic?'Public':'not public'}}
-			</div>		
+			<input type="text" class="form-control" ng-model="test.testName" placeholder="type test name" /><br />			
 			<div class="row">
 				<div class="col-sm-4">
 					<form>
@@ -18,6 +15,18 @@
 						<input type="date" name="endday"  ng-model="test.endDate">
 					</form>
 				</div>
+				<div class="col-sm-4">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="question" ng-model="test.isPublic">{{test.isPublic?'Public':'not public'}}
+						</label>
+					</div>	
+				</div>
+			</div>
+			<div>
+				<h3 class="text-center">
+					Questions
+				</h3>
 			</div>
 		</div>
 		<div ng-model="questions">
@@ -41,7 +50,9 @@
 							</div>
 						</form>
 						<div class="checkbox">
-							<input type="checkbox" name="imageIncluded" ng-model="question.imageIncluded">{{question.imageIncluded?'not include image':'include image'}}
+							<label>
+								<input type="checkbox" name="imageIncluded" ng-model="question.imageIncluded">{{question.imageIncluded?'not include image':'include image'}}
+							</label>
 						</div>
 						<div ng-if="question.imageIncluded">
 							<form id="file-form" action="" method="POST">
@@ -52,39 +63,47 @@
 						<div ng-if="question.type == 'checkbox'">						
 							<form role="form" >
 								<div class="checkbox">
-									<input type="checkbox" name="answersAreImages" ng-model="question.answersAreImages">{{question.answersAreImages?'questions are images':'questions are text'}}
+									<label>
+										<input type="checkbox" name="answersAreImages" ng-model="question.answersAreImages">{{question.answersAreImages?'questions are images':'questions are text'}}
+									</label>
 								</div>
 								<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
-									<input type="checkbox" ng-model="answer.isTrue">
-									<div ng-if="question.answersAreImages">
-										<form id="file-form" action="" method="POST">
-											<div class="directive" custom-on-change data="answer" name="photos[]" changefunc="answerImgChanged"></div>											
-											<img ng-src={{answer.url}} alt="" height="50px">
-										</form>
-									</div>							
-									<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" />
+									<label>
+										<input type="checkbox" ng-model="answer.isTrue">
+										<div ng-if="question.answersAreImages">
+											<form id="file-form" action="" method="POST">
+												<div class="directive" custom-on-change data="answer" name="photos[]" changefunc="answerImgChanged"></div>											
+												<img ng-src={{answer.url}} alt="" height="50px">
+											</form>
+										</div>							
+										<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" />
+									</label>
 									<button class="btn btn-danger " ng-click="removeAnswer(question,$index)" aria-label="Remove">X</button>
 								</div>
-								<button type="button" class="btn btn-success" ng-click="addAnswer(question)">add answer</button>
+								<button type="button" class="btn btn-default" ng-click="addAnswer(question)">add answer</button>
 							</form>
 						</div>
 						<div ng-if="question.type == 'radio'">
 							<form role="form">
 								<div class="checkbox">
-									<input type="checkbox" name="answersAreImages" ng-model="question.answersAreImages">{{question.answersAreImages?'questions are images':'questions are text'}}
+									<label>
+										<input type="checkbox" name="answersAreImages" ng-model="question.answersAreImages">{{question.answersAreImages?'questions are images':'questions are text'}}
+									</label>							
 								</div>
-								<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
-									<input type="radio" ng-click="setDefault(question.allAnswers,answer)" name="answerss" ng-checked="answer.isDefault">
-									<div ng-if="question.answersAreImages">
-										<form id="file-form" action="" method="POST">
-											<div class="directive" custom-on-change data="answer" name="photos[]" changefunc="answerImgChanged"></div>											
-											<img ng-src={{answer.url}} alt="" height="50px">
-										</form>									
-									</div>	
-									<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" />
+								<div class="radio form-inline" ng-repeat="answer in question.allAnswers">
+									<label>
+										<input type="radio" ng-click="setDefault(question.allAnswers,answer)" name="answerss" ng-checked="answer.isDefault">
+										<div ng-if="question.answersAreImages">
+											<form id="file-form" action="" method="POST">
+												<div class="directive" custom-on-change data="answer" name="photos[]" changefunc="answerImgChanged"></div>											
+												<img ng-src={{answer.url}} alt="" height="50px">
+											</form>									
+										</div>	
+										<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" />
+									</label>
 									<button class="btn btn-danger" ng-click="removeAnswer(question,$index)" aria-label="Remove">X</button>
 								</div>
-								<button type="button" class="btn btn-success" ng-click="addAnswer(question)">add answer</button>
+								<button type="button" class="btn btn-default" ng-click="addAnswer(question)">add answer</button>
 							</form>	
 						</div>
 						<div ng-if="question.type == 'text'">
@@ -94,9 +113,13 @@
 				</tr>
 			</table>
 		</div>
-		<button type="button" class="btn btn-success" ng-click="addQuestion()">add question</button>
+		<div class="text-center">
+			<button type="button" class="btn btn-default" ng-click="addQuestion()">add question</button>
+		</div>
 	<div>
-	<button type="button" class="btn btn-success" ng-click="submitTest()">submit</button>
+	<div class="text-center spacer">
+		<button type="button" class="btn btn-default btn-lg btn-block" ng-click="submitTest()">Submit</button>
+	</div>
 </div>
 
 

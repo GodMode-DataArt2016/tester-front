@@ -1,64 +1,68 @@
-<div class="container">
-	<div >
-		<h1>Test name -> {{test.testName}}</h1>
-	</div>
-	<div ng-model="test.users">
-		<table class="table table-hover">
-			<tr>
-				<th>
-					<span class="btn btn-default" ng-click="order('name')">name
-						<span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span>
-					</span>
-				</th>
-				<th>
-					<span class="btn btn-default" ng-click="order('surname')">surname
-						<span class="sortorder" ng-show="predicate === 'surname'" ng-class="{reverse:reverse}"></span>
-					</span>
-				</th>
-				<th>
-					<span class="btn btn-default" ng-click="order('phone')">phone
-						<span class="sortorder" ng-show="predicate === 'phone'" ng-class="{reverse:reverse}"></span>
-					</span>
-				</th>
-				<th>
-					<span class="btn btn-default" ng-click="order('email')">email
-						<span class="sortorder" ng-show="predicate === 'email'" ng-class="{reverse:reverse}"></span>
-					</span>
-				</th>
-				<th>
-					<span class="btn btn-default" ng-click="order('rating')">rating
-						<span class="sortorder" ng-show="predicate === 'rating'" ng-class="{reverse:reverse}"></span>
-					</span>
-				</th>
-				<th ng-repeat="question in test.questions">
-					<span class="btn btn-default" ng-click="order(question.name)">{{question.name}}
-						<span class="sortorder" ng-show="predicate === question.name" ng-class="{reverse:reverse}"></span>
-					</span>
-				</th>			
-			</tr>
-			<tr ng-repeat="user in test.users | orderBy:predicate:reverse">
-				<td>
-					{{user.name}}	
-				</td>
-				<td>
-					{{user.surname}}	
-				</td>
-				<td>
-					{{user.phone}}	
-				</td>
-				<td>
-					{{user.email}}	
-				</td>
-				<td>
-					{{user.rating}}	
-				</td>
-				<td ng-repeat="question in test.questions">
-					<div ng-class="{ 'bg-danger': !user[question.name]}">
-						{{user[question.name]}}	
-					</div>
-				</td>
-				
-			</tr>
-		</table>
+<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+		<div >
+			<h1 class="text-center">{{test.testName}}</h1>
+		</div>
+		<div ng-model="test.users">
+			<div class="table-responsive">
+				<table class="table table-hover table-striped">
+					<tr>
+						<th>
+							<span class="btn btn-default" ng-click="order('name')">name
+								<span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span>
+							</span>
+						</th>
+						<th>
+							<span class="btn btn-default" ng-click="order('surname')">surname
+								<span class="sortorder" ng-show="predicate === 'surname'" ng-class="{reverse:reverse}"></span>
+							</span>
+						</th>
+						<th>
+							<span class="btn btn-default" ng-click="order('phone')">phone
+								<span class="sortorder" ng-show="predicate === 'phone'" ng-class="{reverse:reverse}"></span>
+							</span>
+						</th>
+						<th>
+							<span class="btn btn-default" ng-click="order('email')">email
+								<span class="sortorder" ng-show="predicate === 'email'" ng-class="{reverse:reverse}"></span>
+							</span>
+						</th>
+						<th>
+							<span class="btn btn-default" ng-click="order('rating')">rating
+								<span class="sortorder" ng-show="predicate === 'rating'" ng-class="{reverse:reverse}"></span>
+							</span>
+						</th>
+						<th ng-repeat="question in test.questions">
+							<span class="btn btn-default" ng-click="order(question.name)">{{question.name}}
+								<span class="sortorder" ng-show="predicate === question.name" ng-class="{reverse:reverse}"></span>
+							</span>
+						</th>			
+					</tr>
+					<tr ng-repeat="user in test.users | orderBy:predicate:reverse">
+						<td>
+							{{user.name}}	
+						</td>
+						<td>
+							{{user.surname}}	
+						</td>
+						<td>
+							{{user.phone}}	
+						</td>
+						<td>
+							{{user.email}}	
+						</td>
+						<td>
+							{{user.rating}}	
+						</td>
+						<td ng-repeat="question in test.questions">
+							<div ng-class="{ 'bg-danger': !user[question.name]}">
+								{{user[question.name]}}	
+							</div>
+						</td>
+						
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
 </div>

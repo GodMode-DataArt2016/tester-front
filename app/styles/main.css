@@ -82,8 +82,8 @@ body {
     border-bottom: 0;
   }
 }
-
-
+ 
+/*  gm */
 .sortorder:after {
   content: '\25b2';
 }
@@ -91,4 +91,32 @@ body {
   content: '\25bc';
 }
 
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	/* Negative indent footer by it's height */
+	margin: 0 auto -60px;
+}
 
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+	height: 60px;
+}
+
+#footer {
+	background-color: #f5f5f5;
+}
+
+.container .credit {
+        margin: 20px 0;
+      }
+
+html, body {
+    height: 100%;
+}
+
+.spacer {
+    margin-top: 50px; /* define margin as you see fit */
+}

@@ -1,48 +1,67 @@
 <div class="container">
-	<div ng-class="{ 'bg-danger': userForm.unconfirmed}">
-		<form novalidate class="simple-form">
-			<input type="text" class="form-control" ng-model="userForm.name" placeholder="Name" /><br />
-			<input type="text" class="form-control" ng-model="userForm.surname" placeholder="Surname" /><br />
-			<input type="text" class="form-control" ng-model="userForm.phone" placeholder="Phone" /><br />
-			<input type="text" class="form-control" ng-model="userForm.email" placeholder="E-mail" /><br />	
-		</form>
-	</div>
-	<div ng-model="test">
-		<h1>Test name -> {{test.testName}}</h1>
-	</div>
-	<div ng-model="questions">
-		<table class="table table-hover">
-			<tr ng-repeat="question in questions">
-				<td>
-					<div ng-class="{ 'bg-danger': question.unconfirmed}">{{question.textDescription}}</div>
-					<div ng-if="question.picture != ''">
-						<img ng-src={{question.picture}} alt="question" height="200px">
-					</div>
-					<form role="form" ng-if="question.type == 'checkbox'">
-						<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
-							<input type="checkbox" ng-model="answer.isTrue">
-							<div ng-if="question.answersAreImages">
-								<img ng-src={{answer.url}} alt="answer.url" height="50px">
-							</div>
-							<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
+	<div ng-if="test.isAvailable">
+		<div ng-class="{ 'bg-danger': userForm.unconfirmed}">
+			<h3 class="text-center">Fill in user data</h3>
+			<form id="user_form" novalidate class="simple-form">
+				<input type="text" class="form-control" ng-model="userForm.name" placeholder="Name" /><br />
+				<input type="text" class="form-control" ng-model="userForm.surname" placeholder="Surname" /><br />
+				<input type="text" class="form-control" ng-model="userForm.phone" placeholder="Phone" /><br />
+				<input type="text" class="form-control" ng-model="userForm.email" placeholder="E-mail" /><br />	
+			</form>
+		</div>
+		<div ng-model="test">
+			<h1 class="text-center">{{test.testName}}</h1>
+		</div>
+		<div ng-model="questions">
+			<table id="questions_table" class="table table-hover">
+				<tr ng-repeat="question in questions">
+					<td>
+						<div ng-class="{ 'bg-danger': question.unconfirmed}">{{question.textDescription}}</div>
+						<div ng-if="question.picture != ''">
+							<img ng-src={{question.picture}} alt="question" height="200px" class="img-thumbnail">
 						</div>
-					</form>
-					<form role="form" ng-if="question.type == 'radio'">
-						<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
-							<input type="radio" ng-click="setDefault(question.allAnswers,answer)" name="answerss" ng-checked="answer.isDefault">
-							<div ng-if="question.answersAreImages">
-								<img ng-src={{answer.url}} alt="answer.url" height="50px">
+						<form role="form" ng-if="question.type == 'checkbox'">
+							<div class="checkbox form-inline" ng-repeat="answer in question.allAnswers">
+								<label>
+									<input type="checkbox" ng-model="answer.isTrue">{{!question.answersAreImages ? answer.text: ""}}
+									<div ng-if="question.answersAreImages">
+										<img ng-src={{answer.url}} alt="answer.url" height="50px" class="img-thumbnail">
+									</div>
+								</label>
 							</div>
-							<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" readonly/>
-						</div>
-					</form>	
-					<div ng-if="question.type == 'text'">
-						<input type="text" ng-model="question.textAnswer" class="form-control" placeholder="Type answer here">
-					</div>	
-				</td>
-			</tr>
-		</table>
-		<button type="button" class="btn btn-success" ng-click="submitAnswer()">Submit answer</button>
+						</form>
+						<form role="form" ng-if="question.type == 'radio'">
+							<div class="radio form-inline" ng-repeat="answer in question.allAnswers">
+								<label>
+									<input type="radio" ng-click="setDefault(question.allAnswers,answer)" name="answerss" ng-checked="answer.isDefault">
+									{{!question.answersAreImages ? answer.text: ""}}
+									<div ng-if="question.answersAreImages">
+										<img ng-src={{answer.url}} alt="answer.url" height="50px" class="img-thumbnail">
+									</div>
+								</label>
+							</div>
+						</form>	
+						<div ng-if="question.type == 'text'">
+							<input type="text" ng-model="question.textAnswer" class="form-control" placeholder="Type answer here">
+						</div>	
+					</td>
+				</tr>
+			</table>
+			<div id="submit_button" class="text-center spacer">
+				<button type="button" class="btn btn-default btn-lg btn-block" ng-click="submitAnswer()">Submit answer</button>
+			</div>
+			<div id="success_send" class="alert alert-success" ng-if="submited">
+				<strong>Success!</strong>
+			</div>
+		</div>
+	</div>
+	<div ng-if="!test.isAvailable">
+		<div>
+			<h1 class="text-center">{{test.testName}}</h1>
+		</div>
+		<div>
+			<h3 class="text-center">{{test.availabilityText}}</h3>
+		</div>
 	</div>
 </div>
 

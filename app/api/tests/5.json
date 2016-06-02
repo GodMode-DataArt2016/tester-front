@@ -1,0 +1,10 @@
+{
+	"id":5,
+	"isAvailable": false,
+	"availabilityText": "This will be available on 'some date'",
+	"testName": "Test name 5",
+	"isPublic": true,
+	"startDate": 1461785956668,
+	"endDate": 1461785959999,
+	"questions": []
+}

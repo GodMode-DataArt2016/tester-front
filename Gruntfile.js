@@ -7,6 +7,8 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+
+
 module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
@@ -64,7 +66,8 @@ module.exports = function (grunt) {
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
-      }
+      },
+	  
     },
 
     // The actual grunt server settings
@@ -423,7 +426,19 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
-    }
+    },
+	
+	//
+	'customize-bootstrap': {
+	  yourTarget: {
+		  options: {
+			  bootstrapPath: 'bower_components/bootstrap',
+			  src: 'app/styles/bootstrap/',
+			  dest: 'bower_components/bootstrap/less',
+			  local: 'newset.less'
+		  }
+	  },
+	},
   });
 
 
@@ -497,4 +512,9 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+   
+   
+   // --------------------- 
+  grunt.loadNpmTasks('grunt-customize-bootstrap');
+  
 };

@@ -1,7 +1,8 @@
 {
 	"id":1,
+	"isAvailable": true,
 	"testName": "firstTest",
-	"isPublic": true,
+	"isPublic": false,
 	"startDate": 1461785956668,
 	"endDate": 1461785959999,
 	"questions": [1,2,3],

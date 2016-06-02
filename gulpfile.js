@@ -1,5 +1,8 @@
 var gulp = require('gulp'),
-    awspublish = require('gulp-awspublish');
+    awspublish = require('gulp-awspublish');	
+//var mainBowerFiles = require('main-bower-files');
+var less = require("gulp-less");
+
 
 var localConfig = {
   //buildSrc: './build/**/*',
@@ -33,4 +36,13 @@ gulp.task('build:production', function() {
 gulp.task('default', function() {
   // place code for your default task here
   console.log("gulp taskkkkk");
+});
+
+
+
+
+gulp.task("less", function() {
+   gulp.src("app/styles/bootstrap/newbootstrap.less")
+       .pipe(less())
+       .pipe(gulp.dest("app/styles/"));
 });

@@ -27,6 +27,7 @@ angular.module('testerFrontApp')
 		$scope.userForm = {
 			unconfirmed: false	
 		};
+		$scope.submited = false;
 		
 		Test.get({ id: $routeParams.testId}, function(data) {
 			$scope.test = data;
@@ -95,7 +96,7 @@ angular.module('testerFrontApp')
 				console.log(submitObject);
 				
 				SubmitUser.save($scope.saveObj, function() {				
-					alert("saved");
+					alert("saved");				
 				});	
 				
 				alert(status);	

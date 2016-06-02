@@ -1,23 +1,27 @@
 <div class="container">
-	<div>Tests available</div>
+	<div>
+		<h3 class="text-center">Tests available</h3>		
+	</div>
 	<div ng-model="tests">
-		<table class="table table-hover">
-			<tr ng-repeat="test in tests">
-				<td>{{test.id}}</td>
-				<td>
-					<div ng-if="test.isAvailable">
-						<a href="#/test/{{test.id}}">{{test.testName}}</a>
-					</div>
-					<div ng-if="!test.isAvailable">
-						{{test.testName}}
-					</div>
-				</td>	
-				<td>
-					<div ng-if="!test.isAvailable">
-						{{test.availabilityText}}
-					</div>
-				</td>	
-			</tr>
-		</table>
+		<div class="table-responsive">
+			<table class="table table-hover table-striped">
+				<tr ng-repeat="test in tests">
+					<td>{{test.id}}</td>
+					<td>
+						<div ng-if="test.isAvailable">
+							<a href="#/test/{{test.id}}">{{test.testName}}</a>
+						</div>
+						<div ng-if="!test.isAvailable">
+							<a href="#/test/{{test.id}}">{{test.testName}}</a>						
+						</div>
+					</td>	
+					<td>
+						<div ng-if="!test.isAvailable">
+							{{test.availabilityText}}
+						</div>
+					</td>	
+				</tr>
+			</table>
+		</div>
 	</div>
 </div>
