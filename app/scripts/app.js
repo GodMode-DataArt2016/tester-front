@@ -69,7 +69,8 @@ angular
 
   
 angular.module('testerFrontApp').constant('app_config', {
-	apiUrl: 'http://localhost:1337/'
+	//apiUrl: 'http://localhost:1337/'
+	apiUrl: 'http://54.186.4.84:1337/'
 	//apiUrl: '/'
 });
 

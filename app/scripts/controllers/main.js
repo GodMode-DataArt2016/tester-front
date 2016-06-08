@@ -521,7 +521,7 @@ angular.module('testerFrontApp')
 }]);
 
 angular.module('testerFrontApp')
-	.controller('LoginCtrl', ['$scope', 'OAuth', 'UserReg', '$window', '$location', function($scope, OAuth, UserReg, $window, $location) {
+	.controller('LoginCtrl', ['$scope', 'OAuth', 'UserReg', '$window', '$location', '$cookies', function($scope, OAuth, UserReg, $window, $location, $cookies) {
 		
 		var error_reason='';
 		$scope.errorText='';
@@ -567,7 +567,6 @@ angular.module('testerFrontApp')
 			};
 				
 			OAuth.getAccessToken(loginUser).then(function(err, data){
-				//console.log('ok');	
 				$scope.isAuthenticated = OAuth.isAuthenticated();
 			});	
 		}
@@ -579,8 +578,8 @@ angular.module('testerFrontApp')
 					'password':$scope.loginData.pass
 				};
 				
-				UserReg.send(newUser).success(function(data) {									
-					console.log(data);					
+				UserReg.send(newUser).success(function(data) {
+					$window.alert('User created successfully');					
 				});	
 			} else {
 				$window.alert('The entered passwords do not match');	
@@ -588,6 +587,7 @@ angular.module('testerFrontApp')
 		}
 		
 		$scope.logout = function(){
-			OAuth.revokeToken();
+			$cookies.remove('token');
+			$scope.isAuthenticated = OAuth.isAuthenticated();
 		}
 }]);
