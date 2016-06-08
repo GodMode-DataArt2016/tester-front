@@ -121,10 +121,19 @@ html, body {
     margin-top: 50px; /* define margin as you see fit */
 }
 
+.spacer-small {
+    margin-top: 20px; /* define margin as you see fit */
+}
+
+
 .question_img {
 	max-height:250px;
 }
 
 .answer_img {
 	max-height:70px;
+}
+
+.gm_light_bg {
+	background-color: #CFD8DC;
 }

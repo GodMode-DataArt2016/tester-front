@@ -1,73 +1,156 @@
 var testerFrontServices = angular.module('testerFrontServices', ['ngResource']);
-/*
-testerFrontServices.factory('Test', ['$resource',
-  function($resource){
-    return $resource('tests/:testId.json', {}, {
-      query: {method:'GET', params:{testId:'tests'}, isArray:true}
-    });
- }]);
- */
 
- /*
-testerFrontServices.factory("Test", function($resource) {
-  return $resource("tests/:testId.json", {}, {
-    query: { method: "GET",params:{testId:'tests'}, isArray: true }
+
+
+
+function appendTransform(defaults, transform) {
+
+  // We can't guarantee that the default transformation is an array
+  defaults = angular.isArray(defaults) ? defaults : [defaults];
+
+  // Append the new transformation to the defaults
+  return defaults.concat(transform);
+}
+
+function addServerPrefix(item, apiUrl){
+	if(item.imageIncluded && item.imgUrl){
+		item.imgUrl = apiUrl + item.imgUrl;	
+	}
+	if(item.answersAreImages && item.allAnswers.length){
+		item.allAnswers.forEach(function(answer){
+			if(answer.imgUrl){
+				answer.imgUrl = apiUrl + answer.imgUrl;	
+			}							
+		});	
+	}	
+	return item;
+}
+
+
+testerFrontServices.factory("Test", ['$resource', 'app_config', function($resource, app_config) {
+	return $resource(app_config.apiUrl + "api/test/:id", {}, {
+		query: {		
+			method: "GET",
+			isArray: true
+		}
+	});
+}]);
+
+testerFrontServices.factory("TestAdmin", ['$resource', 'app_config', function($resource, app_config) {
+  return $resource(app_config.apiUrl + "api/admin/test/:id", {}, {
+    query: { method: "GET", isArray: true },
+	delete: {method:'DELETE'}
   });
-});
-*/
-testerFrontServices.factory("Test", function($resource) {
-  return $resource("api/tests/:id.json", {}, {
+}]);
+
+
+testerFrontServices.factory("Question", ['$resource', 'app_config', function($resource, app_config) {
+	return $resource(app_config.apiUrl + "api/question/:id", {}, {
+		query: { 
+			method: "GET",
+			isArray: true,
+			transformResponse: function(data, headers){
+				//MESS WITH THE DATA
+				console.log('--');
+				if(data.questions){
+					data.questions.forEach(function(item){
+						if(item.imageIncluded && item.imgUrl){
+							item.imgUrl = srverAddr + item.imgUrl;	
+						}
+						if(data.answersAreImages && data.allAnswers.length){
+							data.allAnswer.forEach(function(answer){
+								if(answer.imgUrl){
+									answer.imgUrl = srverAddr + answer.imgUrl;	
+								}							
+							});	
+						}		
+					});	
+				}
+				console.log('--', data);
+				return data;
+			}
+		}
+	});
+}]);
+
+testerFrontServices.factory('Question2',['$http', 'app_config', function($http, app_config){
+    return {
+        query: function(id) {
+            return $http({
+					method: 'GET',
+					url: app_config.apiUrl + "api/question/" + id,
+					transformResponse: appendTransform($http.defaults.transformResponse, function(data) {
+						return addServerPrefix(data, app_config.apiUrl);
+					})
+			})
+        }
+    };
+}]);
+
+testerFrontServices.factory("QuestionAdmin", ['$resource', 'app_config', function($resource, app_config) {
+  return $resource(app_config.apiUrl + "api/admin/question/:id", {}, {
     query: { method: "GET", isArray: true }
   });
-});
+}]);
 
-testerFrontServices.factory("TestAdmin", function($resource) {
-  return $resource("api/admin/tests/:id.json", {}, {
-    query: { method: "GET", isArray: true }
+testerFrontServices.factory("QuestionAdmin2", ['$http', 'app_config', function($http, app_config) {
+	return {
+        query: function(id) {
+            return $http({
+				method: 'GET',
+				url: app_config.apiUrl + "api/admin/question/" + id,
+				transformResponse: appendTransform($http.defaults.transformResponse, function(data) {
+					return addServerPrefix(data, app_config.apiUrl);
+				})
+			})
+        }
+    };
+}]);
+
+testerFrontServices.factory("Statistics", ['$resource', 'app_config', function($resource, app_config) {
+  return $resource(app_config.apiUrl + "api/admin/statistics/:id", {}, {
+    query: { method: "GET", isArray: false }
   });
-});
+}]);
 
+testerFrontServices.factory("SubmitUser", ['$resource', 'app_config', function($resource, app_config) {
+	return $resource(app_config.apiUrl + "api/test/:id");
+}]);
 
-testerFrontServices.factory("Question", function($resource) {
-  return $resource("api/questions/:id.json", {}, {
-    query: { method: "GET", isArray: true }
-  });
-});
+testerFrontServices.factory("SubmitAdmin", ['$resource', 'app_config', function($resource, app_config) {
+	return $resource(app_config.apiUrl + "api/admin/test/:id", {id: '@id'});
+}]);
 
-testerFrontServices.factory("QuestionAdmin", function($resource) {
-  return $resource("api/admin/questions/:id.json", {}, {
-    query: { method: "GET", isArray: true }
-  });
-});
-
-testerFrontServices.factory("Statistics", function($resource) {
-  return $resource("api/admin/statistics/:id.json", {}, {
-    query: { method: "GET", isArray: true }
-  });
-});
-
-testerFrontServices.factory("SubmitUser", function($resource) {
-	return $resource("http://somebackendaddress/api/tests/:id.json");
-});
-
-testerFrontServices.factory("SubmitAdmin", function($resource) {
-	return $resource("http://somebackendaddress/api/admin/test/:id.json", {id: '@id'});
-});
-
-/*
-testerFrontServices.factory("SubmitImage", function($resource) {
-	return $resource("http://localhost:4500/api/saveimage");
-});*/
-
-testerFrontServices.factory("SubmitImage", function($resource) {
-	return $resource("http://localhost:4500/api/saveimage",{},{
+testerFrontServices.factory("SubmitImage", ['$resource', 'app_config', function($resource, app_config) {
+	return $resource(app_config.apiUrl + "api/saveimage",{},{
 		create: {
             method: "POST",
             transformRequest: angular.identity,
             headers: { 'Content-Type': undefined }
         }			
 	});
-});
+}]);
+/*
+testerFrontServices.factory("UserReg", ['$resource', 'app_config', function($resource, app_config) {
+  return $resource(app_config.apiUrl + "api/oauth/token", {}, {
+    query: { method: "GET", isArray: true }
+  });
+}]);
+*/
+testerFrontServices.factory('UserReg',['$http', 'app_config', function($http, app_config){
+    return {
+        send: function(data) {
+            return $http({
+					method: 'POST',
+					url: app_config.apiUrl + "api/register",
+					data: data
+			})
+        }
+    };
+}]);
+
+
+
 
 testerFrontServices.directive('customOnChange', function() {
   return {

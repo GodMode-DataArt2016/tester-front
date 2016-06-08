@@ -1,5 +1,10 @@
 <div class="container">
 	<div>
+		<div class="text-right" ng-if="testNotNew">
+			<button type="button" class="btn btn-danger" ng-click="deleteTest()">delete</button>
+		</div>
+		<div class="spacer-small">
+		</div>
 		<div  ng-class="{ 'bg-danger': test.unconfirmed}">
 			<input type="text" class="form-control" ng-model="test.testName" placeholder="type test name" /><br />			
 			<div class="row">
@@ -57,7 +62,7 @@
 						<div ng-if="question.imageIncluded">
 							<form id="file-form" action="" method="POST">
 								<div class="directive" custom-on-change data="question" name="image" changefunc="questionImgChanged"></div>
-								<img ng-src={{question.picture}} alt="" class="img-thumbnail question_img">
+								<img ng-src={{question.imgUrl}} alt="" class="img-thumbnail question_img">
 							</form>
 						</div>
 						<div ng-if="question.type == 'checkbox'">						
@@ -73,7 +78,7 @@
 										<div ng-if="question.answersAreImages">
 											<form id="file-form" action="" method="POST">
 												<div class="directive" custom-on-change data="answer" name="photos[]" changefunc="answerImgChanged"></div>											
-												<img ng-src={{answer.url}} alt="" class="img-thumbnail answer_img">
+												<img ng-src={{answer.imgUrl}} alt="" class="img-thumbnail answer_img">
 											</form>
 										</div>							
 										<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" />
@@ -96,7 +101,7 @@
 										<div ng-if="question.answersAreImages">
 											<form id="file-form" action="" method="POST">
 												<div class="directive" custom-on-change data="answer" name="photos[]" changefunc="answerImgChanged"></div>											
-												<img ng-src={{answer.url}} alt="" class="img-thumbnail answer_img">
+												<img ng-src={{answer.imgUrl}} alt="" class="img-thumbnail answer_img">
 											</form>									
 										</div>	
 										<input ng-if="!question.answersAreImages" type="text" class="form-control" ng-model="answer.text" placeholder="answer" />
@@ -119,7 +124,7 @@
 	<div>
 	<div class="text-center spacer">
 		<button type="button" class="btn btn-default btn-lg btn-block" ng-click="submitTest()">Submit</button>
-	</div>
+	</div>	
 </div>
 
 

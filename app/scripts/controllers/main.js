@@ -16,12 +16,12 @@ angular.module('testerFrontApp')
 }]);
 
 angular.module('testerFrontApp')
-	.controller('AdminCtrl', ['$scope', 'TestAdmin', function($scope, TestAdmin) {
+	.controller('AdminCtrl', ['$scope', 'TestAdmin', 'OAuth', function($scope, TestAdmin, OAuth) {
 		$scope.tests = TestAdmin.query();
 }]);
 
 angular.module('testerFrontApp')
-	.controller('TestCtrl', ['$scope', '$routeParams', 'Test', 'Question', 'SubmitUser', function($scope, $routeParams, Test, Question, SubmitUser) {
+	.controller('TestCtrl', ['$scope', '$routeParams', 'Test', 'Question2', 'SubmitUser', function($scope, $routeParams, Test, Question, SubmitUser) {
 		var questions = [];
 		$scope.questions = questions;
 		$scope.userForm = {
@@ -38,9 +38,15 @@ angular.module('testerFrontApp')
 			var questionIDs = data.questions;
 			
 			questionIDs.forEach(function (ID) {
-				Question.get({ id: ID}, function(data) {									
+				
+				Question.query(ID).success(function(data) {									
 					questions.push(data);					
 				});
+					
+					/*
+				Question.get({ id: ID}, function(data) {									
+					questions.push(data);					
+				});*/
 			});		
 			$scope.questions = questions;
 		});	
@@ -207,15 +213,18 @@ angular.module('testerFrontApp')
 
 
 angular.module('testerFrontApp')
-	.controller('AdminTestCtrl', ['$scope', '$routeParams', 'TestAdmin', 'QuestionAdmin', 'SubmitAdmin', 'SubmitImage', function($scope, $routeParams, TestAdmin, Question, SubmitAdmin, SubmitImage) {
+	.controller('AdminTestCtrl', ['$scope', '$routeParams', 'TestAdmin', 'QuestionAdmin2', 'SubmitAdmin', 'SubmitImage', '$window', function($scope, $routeParams, TestAdmin, Question, SubmitAdmin, SubmitImage, $window) {
 		var questions = [];
 		$scope.questions = questions;
 		$scope.test = {
 			unconfirmed: false	
 		};
+		$scope.testNotNew = false; // if true - show delete button
 		
 		if($routeParams.testId !== 'createnew'){
-			TestAdmin.get({ id: $routeParams.testId}, function(data) {				
+			TestAdmin.get({ id: $routeParams.testId}, function(data) {
+				$scope.testNotNew = true;
+				
 				$scope.test = data;
 				$scope.test.startDate = new Date(data.startDate);
 				$scope.test.endDate = new Date(data.endDate);
@@ -223,10 +232,14 @@ angular.module('testerFrontApp')
 				var questions = [];
 				var questionIDs = data.questions;
 				
-				questionIDs.forEach(function (ID) {
-					Question.get({ id: ID}, function(data) {									
+				questionIDs.forEach(function (ID) {						
+					Question.query(ID).success(function(data) {									
 						questions.push(data);					
 					});
+					/*
+					Question.get({ id: ID}, function(data) {									
+						questions.push(data);					
+					});*/
 				});		
 				$scope.questions = questions;
 			});	
@@ -277,7 +290,7 @@ angular.module('testerFrontApp')
 		$scope.questionImgChanged = function(question, input){
 			if (input.files && input.files[0]) {
 				$scope.$apply(function () {
-					question.picture = URL.createObjectURL(event.target.files[0]);
+					question.imgUrl = URL.createObjectURL(event.target.files[0]);
 				});
 				$scope.postImg2(question, input);
 			}
@@ -286,7 +299,7 @@ angular.module('testerFrontApp')
 		$scope.answerImgChanged = function(answer, input){
 			if (input.files && input.files[0]) {
 				$scope.$apply(function () {			
-					answer.url = URL.createObjectURL(event.target.files[0]);	
+					answer.imgUrl = URL.createObjectURL(event.target.files[0]);	
 				});
 				//$scope.images.push(event.target.files[0]);
 				$scope.postImg2(answer, input);
@@ -465,20 +478,116 @@ angular.module('testerFrontApp')
 			//$scope.sendTestImg();
 		};
 		
+		$scope.deleteTest = function(){
+			//$window.alert('greeting');
+			
+			if ($window.confirm('Are you sure you want to delete this test?')) {
+				var deleteId = $routeParams.testId;
+				SubmitAdmin.delete({ id: deleteId},
+				function(success) {
+					$window.location.href = '/'; //redirect to home
+					alert('Success: ');
+					}, function(reason) {
+					alert('Failed: ' + reason);
+				});
+			} else {
+				// Do nothing!			
+			}
+		}
+		
 }]);
 
 
 angular.module('testerFrontApp')
 	.controller('AdminStatsCtrl', ['$scope', '$routeParams', 'Statistics', function($scope, $routeParams, Statistics) {
-
+		
+		
+		Statistics.query({ id: $routeParams.statsId}, function(data) {
+			$scope.test = data;
+			
+			
+		});
+		/*
 		Statistics.get({ id: $routeParams.statsId}, function(data) {
 			$scope.test = data;
 			
 			
-		});	
+		});	*/
 		
 		$scope.order = function(predicate) {
 			$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
 			$scope.predicate = predicate;
 		};	
+}]);
+
+angular.module('testerFrontApp')
+	.controller('LoginCtrl', ['$scope', 'OAuth', 'UserReg', '$window', '$location', function($scope, OAuth, UserReg, $window, $location) {
+		
+		var error_reason='';
+		$scope.errorText='';
+			
+		$scope.isAuthenticated = OAuth.isAuthenticated();
+		
+		var locData = $location.search();
+		if(locData){
+			if(typeof(locData.error_reason) === 'string'){
+				error_reason = locData.error_reason;	
+			}			
+		}
+		
+		if(error_reason){
+			switch (error_reason){
+				case "Unauthorized":
+					$scope.errorText = 'You should log in to use admin features';
+				break;
+				default:
+					$scope.errorText = '';
+				break;
+			}	
+		}
+		
+		$scope.loginData ={
+			name: "",
+			pass: "",
+			passConfirm: ""
+		};
+		
+		$scope.switchToLogin = function(){
+			$scope.register = false;	
+		}
+		
+		$scope.switchToRegister = function(){
+			$scope.register = true;	
+		}
+		
+		$scope.logIn = function(){		
+			var loginUser = {
+				'username': $scope.loginData.name,
+				'password':$scope.loginData.pass
+			};
+				
+			OAuth.getAccessToken(loginUser).then(function(err, data){
+				//console.log('ok');	
+				$scope.isAuthenticated = OAuth.isAuthenticated();
+			});	
+		}
+		
+		$scope.sendRegData = function(){
+			if($scope.loginData.pass === $scope.loginData.passConfirm){
+				var newUser = {
+					'username': $scope.loginData.name,
+					'password':$scope.loginData.pass
+				};
+				
+				UserReg.send(newUser).success(function(data) {									
+					console.log(data);					
+				});	
+			} else {
+				$window.alert('The entered passwords do not match');	
+			}	
+		}
+		
+		$scope.logout = function(){
+			OAuth.revokeToken();
+		}
 }]);
