@@ -8,9 +8,20 @@
 	</div>
 		<div ng-model="tests">
 			<table class="table table-hover">
+				<tr>
+					<th>
+						Test name
+					</th>
+					<th>
+						Public
+					</th>
+					<th>
+						Statistics
+					</th>
+				</tr>
 				<tr ng-repeat="test in tests">
-					<td>{{test.id}}</td>
 					<td><a href="#/admin/test/{{test.id}}">{{test.testName}}</a></td>
+					<td>{{test.isPublic ? 'yes' : 'no'}}</td>
 					<td><a href="#/admin/statistics/{{test.id}}">statistics</a></td>
 				</tr>
 			</table>

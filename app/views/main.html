@@ -6,18 +6,12 @@
 		<div class="table-responsive">
 			<table class="table table-hover table-striped">
 				<tr ng-repeat="test in tests">
-					<td>{{test.id}}</td>
 					<td>
-						<div ng-if="test.isAvailable">
-							<a href="#/test/{{test.id}}">{{test.testName}}</a>
+						<div ng-if="test.isAvailable" class="text-center">
+							<a href="#/test/{{test.id}}"><h4>{{test.testName}}</h4></a>
 						</div>
-						<div ng-if="!test.isAvailable">
-							<a href="#/test/{{test.id}}">{{test.testName}}</a>						
-						</div>
-					</td>	
-					<td>
-						<div ng-if="!test.isAvailable">
-							{{test.availabilityText}}
+						<div ng-if="!test.isAvailable" class="text-center">
+							<a href="#/test/{{test.id}}"><h4>{{test.testName}}</h4></a>						
 						</div>
 					</td>	
 				</tr>

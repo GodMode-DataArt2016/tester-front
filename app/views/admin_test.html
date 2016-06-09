@@ -25,7 +25,11 @@
 						<label>
 							<input type="checkbox" name="question" ng-model="test.isPublic">{{test.isPublic?'Public':'not public'}}
 						</label>
-					</div>	
+					</div>
+					<div ng-if="!test.isPublic && privateLink">
+						<div>private link:</div>
+						<label>{{privateLink}}</label>
+					</div>
 				</div>
 			</div>
 			<div>

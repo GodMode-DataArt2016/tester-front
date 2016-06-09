@@ -221,6 +221,7 @@ angular.module('testerFrontApp')
 			isPublic: true
 		};
 		$scope.testNotNew = false; // if true - show delete button
+		$scope.privateLink = "";
 		
 		if($routeParams.testId !== 'createnew'){
 			TestAdmin.get({ id: $routeParams.testId}, function(data) {
@@ -229,6 +230,8 @@ angular.module('testerFrontApp')
 				$scope.test = data;
 				$scope.test.startDate = new Date(data.startDate);
 				$scope.test.endDate = new Date(data.endDate);
+				
+				$scope.privateLink = '/test/' + data.id;
 				
 				var questions = [];
 				var questionIDs = data.questions;
