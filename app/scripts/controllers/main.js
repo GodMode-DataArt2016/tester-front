@@ -217,7 +217,8 @@ angular.module('testerFrontApp')
 		var questions = [];
 		$scope.questions = questions;
 		$scope.test = {
-			unconfirmed: false	
+			unconfirmed: false,
+			isPublic: true
 		};
 		$scope.testNotNew = false; // if true - show delete button
 		
