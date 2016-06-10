@@ -5,7 +5,7 @@
 	<div ng-model="tests">
 		<div class="table-responsive">
 			<table class="table table-hover table-striped">
-				<tr ng-repeat="test in tests">
+				<tr ng-repeat="test in tests | startFrom:currentPage*pageSize | limitTo:pageSize">
 					<td>
 						<div ng-if="test.isAvailable" class="text-center">
 							<a href="#/test/{{test.id}}"><h4>{{test.testName}}</h4></a>
@@ -16,6 +16,15 @@
 					</td>	
 				</tr>
 			</table>
+		</div>
+		<div class="text-center" ng-show="numberOfPages">
+			<button id="list_left" class="btn btn-default" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+				Previous
+			</button>
+			{{currentPage+1}}/{{numberOfPages}}
+			<button id="list_right" class="btn btn-default" ng-disabled="currentPage >= numberOfPages - 1" ng-click="currentPage=currentPage+1">
+				Next
+			</button>
 		</div>
 	</div>
 </div>

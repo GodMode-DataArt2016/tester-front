@@ -12,12 +12,37 @@
   
 angular.module('testerFrontApp')
 	.controller('MainCtrl', ['$scope', 'Test', function($scope, Test) {
-		$scope.tests = Test.query();
+		$scope.currentPage = 0;
+		$scope.pageSize = 15;	
+		$scope.numberOfPages = 0;
+		
+		$scope.tests = Test.query(function(data){
+				if(data){
+					$scope.numberOfPages = Math.ceil(data.length/$scope.pageSize);	
+				}      
+			},
+			function(err){
+				
+		});
+		
+		
+		
 }]);
 
 angular.module('testerFrontApp')
 	.controller('AdminCtrl', ['$scope', 'TestAdmin', 'OAuth', function($scope, TestAdmin, OAuth) {
-		$scope.tests = TestAdmin.query();
+		$scope.currentPage = 0;
+		$scope.pageSize = 15;	
+		$scope.numberOfPages = 0;
+		
+		$scope.tests = TestAdmin.query(function(data){
+			if(data){
+				$scope.numberOfPages = Math.ceil(data.length/$scope.pageSize);	
+			}      
+		},
+		function(err){
+			
+		});
 }]);
 
 angular.module('testerFrontApp')
@@ -392,7 +417,7 @@ angular.module('testerFrontApp')
 			// check if all questions are correct
 			var questionsVeryfy = true;
 			$scope.questions.forEach(function(item){	
-				if($scope.verifyQuestion(item)){
+				if($scope.verifyQuestion(item)){ 
 					submitObject.questions.push(item);
 					item.unconfirmed = false;
 				} else {					

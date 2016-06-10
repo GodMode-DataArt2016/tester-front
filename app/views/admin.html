@@ -19,11 +19,20 @@
 						Statistics
 					</th>
 				</tr>
-				<tr ng-repeat="test in tests">
+				<tr ng-repeat="test in tests | startFrom:currentPage*pageSize | limitTo:pageSize">
 					<td><a href="#/admin/test/{{test.id}}">{{test.testName}}</a></td>
 					<td>{{test.isPublic ? 'yes' : 'no'}}</td>
 					<td><a href="#/admin/statistics/{{test.id}}">statistics</a></td>
 				</tr>
 			</table>
+	</div>
+	<div class="text-center" ng-show="numberOfPages">
+		<button id="list_left" class="btn btn-default" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+			Previous
+		</button>
+		{{currentPage+1}}/{{numberOfPages}}
+		<button id="list_right" class="btn btn-default" ng-disabled="currentPage >= numberOfPages - 1" ng-click="currentPage=currentPage+1">
+			Next
+		</button>
 	</div>
 </div>

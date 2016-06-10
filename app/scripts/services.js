@@ -185,3 +185,11 @@ testerFrontServices.filter('orderObjectBy', function() {
     return filtered;
   };
 });
+
+
+testerFrontServices.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});
