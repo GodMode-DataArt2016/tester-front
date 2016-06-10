@@ -218,7 +218,9 @@ angular.module('testerFrontApp')
 		$scope.questions = questions;
 		$scope.test = {
 			unconfirmed: false,
-			isPublic: true
+			isPublic: true,
+			startDate:  '',
+			endDate: ''
 		};
 		$scope.testNotNew = false; // if true - show delete button
 		$scope.privateLink = "";
@@ -358,6 +360,7 @@ angular.module('testerFrontApp')
 		
 		$scope.submitTest = function (){
 			var verified = true;
+			var status = "";
 			
 			var submitObject = {};
 			
@@ -368,15 +371,22 @@ angular.module('testerFrontApp')
 			submitObject.isPublic = $scope.test.isPublic;
 			submitObject.questions = [];
 			
-			if(!(submitObject.testName && submitObject.startDate && submitObject.endDate)){
+			if(!(submitObject.testName)){
 				verified = false;
 				$scope.test.unconfirmed = true;
+				status+= 'Add test name. ';
 			} else {
 				$scope.test.unconfirmed = false;	
 			}
 			
 			if(!$scope.questions.length){
 				verified = false;	
+				status+= 'Add at least one question. ';
+			}
+			
+			if(!$scope.verifyTime(submitObject.startDate, submitObject.endDate)){
+				verified = false;
+				status+= 'Check start/end time. ';
 			}
 			
 			// check if all questions are correct
@@ -392,15 +402,17 @@ angular.module('testerFrontApp')
 			});
 			
 			if(!questionsVeryfy){
-				verified = false;	
+				verified = false;
+				status+= 'Questions are incorect. ';
 			}
 			
 			// final verification check
 			if(verified){
+				status = "Success";
 				$scope.sendTestData(submitObject);
 				//alert("success");	
 			} else {
-				alert("provide all data");		
+				alert(status);		
 			}
 			
 			return verified;
@@ -448,6 +460,15 @@ angular.module('testerFrontApp')
 			}
 						
 			return verified;
+		};
+		
+		$scope.verifyTime = function(startDate, endDate){
+				
+			if(endDate >= startDate && endDate && startDate){
+				return true;	
+			} else {
+				return false;	
+			}
 		};
 		
 		$scope.verifyAnswer = function (question){

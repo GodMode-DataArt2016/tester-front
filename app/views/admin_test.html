@@ -8,17 +8,21 @@
 		<div  ng-class="{ 'bg-danger': test.unconfirmed}">
 			<input type="text" class="form-control" ng-model="test.testName" placeholder="type test name" /><br />			
 			<div class="row">
-				<div class="col-sm-4">
-					<form>
-						Start date:
-						<input type="date" name="startday" ng-model="test.startDate">
-					</form>
+				<div class="col-sm-4">					
+					Start date:
+					<datepicker date-format="yyyy-MM-dd" selector="form-control">
+						<div class="input-group">
+							<input class="form-control" ng-model="test.startDate" id="date_start" type="text" placeholder="yyyy-MM-dd"/>
+						</div>
+					</datepicker>	
 				</div>
-				<div class="col-sm-4">
-					<form>
-						End date:
-						<input type="date" name="endday"  ng-model="test.endDate">
-					</form>
+				<div class="col-sm-4">				
+					End date:
+					<datepicker  date-format="yyyy-MM-dd" selector="form-control">
+						<div class="input-group">
+							<input class="form-control" ng-model="test.endDate" id="date_end" type="text" placeholder="yyyy-MM-dd"/>
+						</div>
+					</datepicker>
 				</div>
 				<div class="col-sm-4">
 					<div class="checkbox">

@@ -43,6 +43,7 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "angular-oauth2": "^4.0.0"
+    "angular-oauth2": "^4.0.0",
+    "rm-datepicker": "^1.0.0"
   }
 }

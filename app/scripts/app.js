@@ -17,7 +17,8 @@ angular
     'ngSanitize',
     'ngTouch',
 	'testerFrontServices',
-	'angular-oauth2'
+	'angular-oauth2',
+	'720kb.datepicker'
   ])
   .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider
