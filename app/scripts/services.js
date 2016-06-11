@@ -12,22 +12,26 @@ function appendTransform(defaults, transform) {
   return defaults.concat(transform);
 }
 
-function addServerPrefix(item, apiUrl){
-	if(item.imageIncluded && item.imgUrl){
-		item.imgUrl = apiUrl + item.imgUrl;	
-	}
-	if(item.answersAreImages && item.allAnswers.length){
-		item.allAnswers.forEach(function(answer){
-			if(answer.imgUrl){
-				answer.imgUrl = apiUrl + answer.imgUrl;	
-			}							
-		});	
-	}	
-	return item;
-}
+function addServerPrefix(oneTest, apiUrl){
+	oneTest.questions.map(function(item){
+		if(item.imageIncluded && item.imgUrl){
+			item.imgUrl = apiUrl + item.imgUrl;	
+		}
+		if(item.answersAreImages && item.allAnswers.length){
+			item.allAnswers.forEach(function(answer){
+				if(answer.imgUrl){
+					answer.imgUrl = apiUrl + answer.imgUrl;	
+				}							
+			});	
+		}	
+		return item;	
+	})
+	
+	return oneTest;	
+};
 
 
-testerFrontServices.factory("Test", ['$resource', 'app_config', function($resource, app_config) {
+testerFrontServices.factory("TestList", ['$resource', 'app_config', function($resource, app_config) {
 	return $resource(app_config.apiUrl + "api/test/:id", {}, {
 		query: {		
 			method: "GET",
@@ -35,44 +39,51 @@ testerFrontServices.factory("Test", ['$resource', 'app_config', function($resour
 		}
 	});
 }]);
+/*
+testerFrontServices.factory("Test", ['$resource', 'app_config', function($resource, app_config) {
+	return $resource(app_config.apiUrl + "api/test/:id", {}, {
+		query: {		
+			method: "GET",
+			isArray: true
+		}
+	});
+}]);*/
 
-testerFrontServices.factory("TestAdmin", ['$resource', 'app_config', function($resource, app_config) {
-  return $resource(app_config.apiUrl + "api/admin/test/:id", {}, {
+testerFrontServices.factory('Test',['$http', 'app_config', function($http, app_config){
+    return {
+        query: function(id) {
+            return $http({
+					method: 'GET',
+					url: app_config.apiUrl + "api/test/" + id,
+					transformResponse: appendTransform($http.defaults.transformResponse, function(data) {
+						return addServerPrefix(data, app_config.apiUrl);
+					})
+			})
+        }
+    };
+}]);
+
+testerFrontServices.factory("TestListAdmin", ['$resource', 'app_config', function($resource, app_config) {
+  return $resource(app_config.apiUrl + "api/admin/test", {}, {
     query: { method: "GET", isArray: true },
 	delete: {method:'DELETE'}
   });
 }]);
 
-
-testerFrontServices.factory("Question", ['$resource', 'app_config', function($resource, app_config) {
-	return $resource(app_config.apiUrl + "api/question/:id", {}, {
-		query: { 
-			method: "GET",
-			isArray: true,
-			transformResponse: function(data, headers){
-				//MESS WITH THE DATA
-				console.log('--');
-				if(data.questions){
-					data.questions.forEach(function(item){
-						if(item.imageIncluded && item.imgUrl){
-							item.imgUrl = srverAddr + item.imgUrl;	
-						}
-						if(data.answersAreImages && data.allAnswers.length){
-							data.allAnswer.forEach(function(answer){
-								if(answer.imgUrl){
-									answer.imgUrl = srverAddr + answer.imgUrl;	
-								}							
-							});	
-						}		
-					});	
-				}
-				console.log('--', data);
-				return data;
-			}
-		}
-	});
+testerFrontServices.factory("TestAdmin", ['$http', 'app_config', function($http, app_config) {
+	return {
+        query: function(id) {
+            return $http({
+				method: 'GET',
+				url: app_config.apiUrl + "api/admin/test/" + id,
+				transformResponse: appendTransform($http.defaults.transformResponse, function(data) {
+					return addServerPrefix(data, app_config.apiUrl);
+				})
+			})
+        }
+    };
 }]);
-
+/*
 testerFrontServices.factory('Question2',['$http', 'app_config', function($http, app_config){
     return {
         query: function(id) {
@@ -87,12 +98,6 @@ testerFrontServices.factory('Question2',['$http', 'app_config', function($http, 
     };
 }]);
 
-testerFrontServices.factory("QuestionAdmin", ['$resource', 'app_config', function($resource, app_config) {
-  return $resource(app_config.apiUrl + "api/admin/question/:id", {}, {
-    query: { method: "GET", isArray: true }
-  });
-}]);
-
 testerFrontServices.factory("QuestionAdmin2", ['$http', 'app_config', function($http, app_config) {
 	return {
         query: function(id) {
@@ -105,7 +110,7 @@ testerFrontServices.factory("QuestionAdmin2", ['$http', 'app_config', function($
 			})
         }
     };
-}]);
+}]);*/
 
 testerFrontServices.factory("Statistics", ['$resource', 'app_config', function($resource, app_config) {
   return $resource(app_config.apiUrl + "api/admin/statistics/:id", {}, {

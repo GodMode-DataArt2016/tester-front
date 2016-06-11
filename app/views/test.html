@@ -12,9 +12,9 @@
 		<div ng-model="test">
 			<h1 class="text-center">{{test.testName}}</h1>
 		</div>
-		<div ng-model="questions">
+		<div>
 			<table id="questions_table" class="table table-hover">
-				<tr ng-repeat="question in questions">
+				<tr ng-repeat="question in test.questions">
 					<td>
 						<div ng-class="{ 'bg-danger': question.unconfirmed}">{{question.textDescription}}</div>
 						<div ng-if="question.imageIncluded">

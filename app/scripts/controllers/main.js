@@ -11,12 +11,12 @@
   
   
 angular.module('testerFrontApp')
-	.controller('MainCtrl', ['$scope', 'Test', function($scope, Test) {
+	.controller('MainCtrl', ['$scope', 'TestList', function($scope, TestList) {
 		$scope.currentPage = 0;
 		$scope.pageSize = 15;	
 		$scope.numberOfPages = 0;
 		
-		$scope.tests = Test.query(function(data){
+		$scope.tests = TestList.query(function(data){
 				if(data){
 					$scope.numberOfPages = Math.ceil(data.length/$scope.pageSize);	
 				}      
@@ -30,12 +30,12 @@ angular.module('testerFrontApp')
 }]);
 
 angular.module('testerFrontApp')
-	.controller('AdminCtrl', ['$scope', 'TestAdmin', 'OAuth', function($scope, TestAdmin, OAuth) {
+	.controller('AdminCtrl', ['$scope', 'TestListAdmin', 'OAuth', function($scope, TestListAdmin, OAuth) {
 		$scope.currentPage = 0;
 		$scope.pageSize = 15;	
 		$scope.numberOfPages = 0;
 		
-		$scope.tests = TestAdmin.query(function(data){
+		$scope.tests = TestListAdmin.query(function(data){
 			if(data){
 				$scope.numberOfPages = Math.ceil(data.length/$scope.pageSize);	
 			}      
@@ -46,36 +46,30 @@ angular.module('testerFrontApp')
 }]);
 
 angular.module('testerFrontApp')
-	.controller('TestCtrl', ['$scope', '$routeParams', 'Test', 'Question2', 'SubmitUser', function($scope, $routeParams, Test, Question, SubmitUser) {
-		var questions = [];
-		$scope.questions = questions;
+	.controller('TestCtrl', ['$scope', '$routeParams', 'Test', 'SubmitUser', function($scope, $routeParams, Test, SubmitUser) {
+
 		$scope.userForm = {
 			unconfirmed: false	
 		};
+		$scope.test = {
+			questions:[]
+		}
 		$scope.submited = false;
 		$scope.submitText = '';
-		
+		/*
 		Test.get({ id: $routeParams.testId}, function(data) {
 			$scope.test = data;
 			$scope.test.startDate = new Date(data.startDate);
 			$scope.test.endDate = new Date(data.endDate);
 			
-			var questions = [];
-			var questionIDs = data.questions;
 			
-			questionIDs.forEach(function (ID) {
-				
-				Question.query(ID).success(function(data) {									
-					questions.push(data);					
-				});
-					
-					/*
-				Question.get({ id: ID}, function(data) {									
-					questions.push(data);					
-				});*/
-			});		
-			$scope.questions = questions;
-		});	
+		});	*/
+		
+		Test.query($routeParams.testId).success(function(data) {									
+			$scope.test = data;
+			$scope.test.startDate = new Date(data.startDate);
+			$scope.test.endDate = new Date(data.endDate);					
+		});
 		
 		$scope.setDefault = function(allAnswers, answer){
 			angular.forEach(allAnswers, function(p) {
@@ -103,7 +97,7 @@ angular.module('testerFrontApp')
 			
 			// check if all questions are correct
 			var questionsVeryfy = true;
-			$scope.questions.forEach(function(item){	
+			$scope.test.questions.forEach(function(item){	
 				if($scope.verifyQuestion(item)){
 					item.unconfirmed = false;					
 				} else {					
@@ -192,7 +186,7 @@ angular.module('testerFrontApp')
 			
 			submitObject.questions = [];
 
-			$scope.questions.forEach(function(item){	
+			$scope.test.questions.forEach(function(item){	
 				submitObject.questions.push($scope.transformQuestion(item));
 			});
 			
@@ -248,45 +242,33 @@ angular.module('testerFrontApp')
 
 
 angular.module('testerFrontApp')
-	.controller('AdminTestCtrl', ['$scope', '$routeParams', 'TestAdmin', 'QuestionAdmin2', 'SubmitAdmin', 'SubmitImage', '$window', function($scope, $routeParams, TestAdmin, Question, SubmitAdmin, SubmitImage, $window) {
-		var questions = [];
-		$scope.questions = questions;
+	.controller('AdminTestCtrl', ['$scope', '$routeParams', 'TestAdmin', 'SubmitAdmin', 'SubmitImage', '$window', function($scope, $routeParams, TestAdmin, SubmitAdmin, SubmitImage, $window) {
+
 		$scope.test = {
 			unconfirmed: false,
 			isPublic: true,
 			startDate:  '',
-			endDate: ''
+			endDate: '',
+			questions:[]
 		};
 		$scope.testNotNew = false; // if true - show delete button
 		$scope.privateLink = "";
 		$scope.submited = false;
 		$scope.submitText = '';
 		
-		if($routeParams.testId !== 'createnew'){
-			TestAdmin.get({ id: $routeParams.testId}, function(data) {
+		if($routeParams.testId !== 'createnew'){		
+			TestAdmin.query($routeParams.testId).success(function(data) {									
 				$scope.testNotNew = true;
 				
 				$scope.test = data;
 				$scope.test.startDate = new Date(data.startDate);
 				$scope.test.endDate = new Date(data.endDate);
 				
-				$scope.privateLink = '/test/' + data.id;
-				
-				var questions = [];
-				var questionIDs = data.questions;
-				
-				questionIDs.forEach(function (ID) {						
-					Question.query(ID).success(function(data) {									
-						questions.push(data);					
-					});
-					/*
-					Question.get({ id: ID}, function(data) {									
-						questions.push(data);					
-					});*/
-				});		
-				$scope.questions = questions;
-			});	
-		}				
+				$scope.privateLink = '/test/' + data.id;					
+			});
+		}
+
+			
 				
 		$scope.addQuestion = function(){
 			var newQuestion = {				
@@ -299,7 +281,7 @@ angular.module('testerFrontApp')
 				allAnswers: [],
 				unconfirmed: false
 			};
-			$scope.questions.push(newQuestion);	
+			$scope.test.questions.push(newQuestion);	
 		};
 		
 		$scope.addAnswer =  function(question){
@@ -344,7 +326,6 @@ angular.module('testerFrontApp')
 				$scope.$apply(function () {			
 					answer.imgUrl = URL.createObjectURL(event.target.files[0]);	
 				});
-				//$scope.images.push(event.target.files[0]);
 				$scope.postImg2(answer, input);
 			}
 		};
@@ -383,7 +364,6 @@ angular.module('testerFrontApp')
 			
 			
 			SubmitImage.create({}, formData).$promise.then(function (res) {
-					//var jsonResponse = JSON.parse(res.responseText);
 					if(res.id){						
 						model.imgId = res.id;	
 					}
@@ -416,7 +396,7 @@ angular.module('testerFrontApp')
 				$scope.test.unconfirmed = false;	
 			}
 			
-			if(!$scope.questions.length){
+			if(!$scope.test.questions.length){
 				verified = false;	
 				status+= 'Add at least one question. ';
 			}
@@ -428,7 +408,7 @@ angular.module('testerFrontApp')
 			
 			// check if all questions are correct
 			var questionsVeryfy = true;
-			$scope.questions.forEach(function(item){	
+			$scope.test.questions.forEach(function(item){	
 				if($scope.verifyQuestion(item)){ 
 					submitObject.questions.push(item);
 					item.unconfirmed = false;
@@ -491,7 +471,6 @@ angular.module('testerFrontApp')
 				}
 				
 				// check if correct answers chosen	
-				//console.log(question);
 				if(!$scope.verifyAnswer(question)){
 					verified = false;	
 				}					
