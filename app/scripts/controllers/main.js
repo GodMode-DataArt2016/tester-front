@@ -53,6 +53,7 @@ angular.module('testerFrontApp')
 			unconfirmed: false	
 		};
 		$scope.submited = false;
+		$scope.submitText = '';
 		
 		Test.get({ id: $routeParams.testId}, function(data) {
 			$scope.test = data;
@@ -126,13 +127,21 @@ angular.module('testerFrontApp')
 				
 				console.log(submitObject);
 				
-				SubmitUser.save($scope.saveObj, function() {				
-					alert("saved");				
+				SubmitUser.save($scope.saveObj, function(data) {
+						$scope.submited = true;
+						$scope.submitText = "success";
+						//alert('success');
+					}, function(error) {
+						if(error && error.data && error.data.error){
+							$scope.submitText = error.data.error;
+							//alert(error.data.error);	
+						} else {
+							alert("problem occurred");	
+						}
 				});	
-				
-				alert(status);	
 			} else {
-				alert(status);		
+				$scope.submitText = status;
+				//alert(status);		
 			}
 		};	
 		
@@ -202,7 +211,8 @@ angular.module('testerFrontApp')
 		$scope.transformQuestion = function (question){
 			var submitObj = {
 				id: question.id,
-				textDescription: question.textDescription,			
+				textDescription: question.textDescription,
+				type: question.type
 			};
 			
 			if(question.type === "text") {
@@ -249,6 +259,8 @@ angular.module('testerFrontApp')
 		};
 		$scope.testNotNew = false; // if true - show delete button
 		$scope.privateLink = "";
+		$scope.submited = false;
+		$scope.submitText = '';
 		
 		if($routeParams.testId !== 'createnew'){
 			TestAdmin.get({ id: $routeParams.testId}, function(data) {
@@ -437,7 +449,8 @@ angular.module('testerFrontApp')
 				$scope.sendTestData(submitObject);
 				//alert("success");	
 			} else {
-				alert(status);		
+				$scope.submitText = status;
+				//alert(status);		
 			}
 			
 			return verified;
@@ -520,12 +533,18 @@ angular.module('testerFrontApp')
 			
 			$scope.saveObj.data = obj;
 			
-			SubmitAdmin.save($scope.saveObj, function() {
-
-				alert("saved");
-				//$scope.sendTestImg();
+			SubmitAdmin.save($scope.saveObj, function(data) {
+				$scope.submitText = 'success';
+				$scope.submited = true;
+				//alert('success');
+			}, function(error) {
+				if(error && error.data && error.data.error){
+					$scope.submitText = error.data.error;
+					//alert(error.data.error);	
+				} else {
+					alert("problem occurred");	
+				}
 			});		
-			//$scope.sendTestImg();
 		};
 		
 		$scope.deleteTest = function(){
