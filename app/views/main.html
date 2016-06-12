@@ -3,21 +3,19 @@
 		<h3 class="text-center">Tests available</h3>		
 	</div>
 	<div ng-model="tests">
-		<div class="table-responsive">
-			<table class="table table-hover table-striped">
-				<tr ng-repeat="test in tests | startFrom:currentPage*pageSize | limitTo:pageSize">
-					<td>
-						<div ng-if="test.isAvailable" class="text-center">
-							<a href="#/test/{{test.id}}"><h4>{{test.testName}}</h4></a>
-						</div>
-						<div ng-if="!test.isAvailable" class="text-center">
-							<a href="#/test/{{test.id}}"><h4>{{test.testName}}</h4></a>						
-						</div>
-					</td>	
-				</tr>
-			</table>
-		</div>
-		<div class="text-center" ng-show="numberOfPages">
+		<table class="table table-hover table-striped">
+			<tr ng-repeat="test in tests | startFrom:currentPage*pageSize | limitTo:pageSize">
+				<td class="break_all">
+					<div ng-if="test.isAvailable" class="text-center">
+						<a href="#/test/{{test.id}}"><h4>{{test.testName}}</h4></a>
+					</div>
+					<div ng-if="!test.isAvailable" class="text-center">
+						<a href="#/test/{{test.id}}"><h4>{{test.testName}}</h4></a>						
+					</div>
+				</td>	
+			</tr>
+		</table>
+		<div class="text-center" ng-show="numberOfPages-1">
 			<button id="list_left" class="btn btn-default" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
 				Previous
 			</button>

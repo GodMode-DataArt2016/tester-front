@@ -14,7 +14,7 @@ angular.module('testerFrontApp')
 	.controller('MainCtrl', ['$scope', 'TestList', function($scope, TestList) {
 		$scope.currentPage = 0;
 		$scope.pageSize = 15;	
-		$scope.numberOfPages = 0;
+		$scope.numberOfPages = 1;
 		
 		$scope.tests = TestList.query(function(data){
 				if(data){
@@ -33,7 +33,7 @@ angular.module('testerFrontApp')
 	.controller('AdminCtrl', ['$scope', 'TestListAdmin', 'OAuth', function($scope, TestListAdmin, OAuth) {
 		$scope.currentPage = 0;
 		$scope.pageSize = 15;	
-		$scope.numberOfPages = 0;
+		$scope.numberOfPages = 1;
 		
 		$scope.tests = TestListAdmin.query(function(data){
 			if(data){

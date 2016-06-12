@@ -137,3 +137,11 @@ html, body {
 .gm_light_bg {
 	background-color: #CFD8DC;
 }
+
+.break_all {
+	word-break:break-all;
+}
+
+.break_all td{
+	word-break:break-all;
+}

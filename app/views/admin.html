@@ -20,13 +20,13 @@
 					</th>
 				</tr>
 				<tr ng-repeat="test in tests | startFrom:currentPage*pageSize | limitTo:pageSize">
-					<td><a href="#/admin/test/{{test.id}}">{{test.testName}}</a></td>
+					<td class="break_all"><a href="#/admin/test/{{test.id}}">{{test.testName}}</a></td>
 					<td>{{test.isPublic ? 'yes' : 'no'}}</td>
 					<td><a href="#/admin/statistics/{{test.id}}">statistics</a></td>
 				</tr>
 			</table>
 	</div>
-	<div class="text-center" ng-show="numberOfPages">
+	<div class="text-center" ng-show="numberOfPages-1">
 		<button id="list_left" class="btn btn-default" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
 			Previous
 		</button>
