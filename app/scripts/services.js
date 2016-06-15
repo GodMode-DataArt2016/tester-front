@@ -118,6 +118,12 @@ testerFrontServices.factory("Statistics", ['$resource', 'app_config', function($
   });
 }]);
 
+testerFrontServices.factory("StatExport", ['$resource', 'app_config', function($resource, app_config) {
+  return $resource(app_config.apiUrl + "api/admin/export/:id", {}, {
+    query: { method: "GET", isArray: false }
+  });
+}]);
+
 testerFrontServices.factory("SubmitUser", ['$resource', 'app_config', function($resource, app_config) {
 	return $resource(app_config.apiUrl + "api/test/:id");
 }]);

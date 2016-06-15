@@ -18,7 +18,7 @@ angular.module('testerFrontApp')
 		
 		$scope.tests = TestList.query(function(data){
 				if(data){
-					$scope.numberOfPages = Math.ceil(data.length/$scope.pageSize);	
+					$scope.numberOfPages = Math.ceil(data.length/$scope.pageSize) || 1;	
 				}      
 			},
 			function(err){
@@ -37,7 +37,7 @@ angular.module('testerFrontApp')
 		
 		$scope.tests = TestListAdmin.query(function(data){
 			if(data){
-				$scope.numberOfPages = Math.ceil(data.length/$scope.pageSize);	
+				$scope.numberOfPages = Math.ceil(data.length/$scope.pageSize) || 1;	
 			}      
 		},
 		function(err){
@@ -47,23 +47,16 @@ angular.module('testerFrontApp')
 
 angular.module('testerFrontApp')
 	.controller('TestCtrl', ['$scope', '$routeParams', 'Test', 'SubmitUser', function($scope, $routeParams, Test, SubmitUser) {
-
+		/* // userForm moved to register
 		$scope.userForm = {
 			unconfirmed: false	
-		};
+		};*/
+		
 		$scope.test = {
 			questions:[]
 		}
 		$scope.submited = false;
 		$scope.submitText = '';
-		/*
-		Test.get({ id: $routeParams.testId}, function(data) {
-			$scope.test = data;
-			$scope.test.startDate = new Date(data.startDate);
-			$scope.test.endDate = new Date(data.endDate);
-			
-			
-		});	*/
 		
 		Test.query($routeParams.testId).success(function(data) {									
 			$scope.test = data;
@@ -84,8 +77,8 @@ angular.module('testerFrontApp')
 			var verified = true;			
 			var status = "";
 			
-			var userForm = $scope.userForm;
-			
+			/* // userForm moved to register
+			var userForm = $scope.userForm;		
 			// check if user form data is filled
 			if(!(userForm.name && userForm.surname && userForm.phone && userForm.email)){
 				verified = false;
@@ -93,7 +86,7 @@ angular.module('testerFrontApp')
 				$scope.userForm.unconfirmed = true;
 			} else {
 				$scope.userForm.unconfirmed = false;	
-			}
+			}*/
 			
 			// check if all questions are correct
 			var questionsVeryfy = true;
@@ -179,7 +172,8 @@ angular.module('testerFrontApp')
 		$scope.transformTest = function (){
 			var submitObject = {};
 			
-			submitObject.userForm = $scope.transformUserform($scope.userForm);
+			// userForm moved to register
+			//submitObject.userForm = $scope.transformUserform($scope.userForm);
 			submitObject.id = $scope.test.id;
 			submitObject.testName = $scope.test.testName;
 
@@ -547,13 +541,11 @@ angular.module('testerFrontApp')
 
 
 angular.module('testerFrontApp')
-	.controller('AdminStatsCtrl', ['$scope', '$routeParams', 'Statistics', function($scope, $routeParams, Statistics) {
+	.controller('AdminStatsCtrl', ['$scope', '$routeParams', 'Statistics', 'StatExport', function($scope, $routeParams, Statistics, StatExport) {
 		
 		
 		Statistics.query({ id: $routeParams.statsId}, function(data) {
-			$scope.test = data;
-			
-			
+			$scope.test = data;	
 		});
 		/*
 		Statistics.get({ id: $routeParams.statsId}, function(data) {
@@ -566,15 +558,28 @@ angular.module('testerFrontApp')
 			$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
 			$scope.predicate = predicate;
 		};	
+		
+		$scope.getExcel = function() {
+			StatExport.query({ id: $routeParams.statsId}, function(data) {
+					
+			});
+		};
+		
 }]);
 
 angular.module('testerFrontApp')
 	.controller('LoginCtrl', ['$scope', 'OAuth', 'UserReg', '$window', '$location', '$cookies', function($scope, OAuth, UserReg, $window, $location, $cookies) {
 		
+		$scope.isAuthenticated = OAuth.isAuthenticated();
+		
 		var error_reason='';
 		$scope.errorText='';
+		$scope.nameRegexp = '([^0-9]*)';	
+		$scope.numberRegexp = '([0-9()-]*)';	
 			
-		$scope.isAuthenticated = OAuth.isAuthenticated();
+		
+		
+		
 		
 		var locData = $location.search();
 		if(locData){
@@ -608,7 +613,7 @@ angular.module('testerFrontApp')
 			$scope.register = true;	
 		}
 		
-		$scope.logIn = function(){		
+		$scope.logIn = function(){			
 			var loginUser = {
 				'username': $scope.loginData.name,
 				'password':$scope.loginData.pass
@@ -620,10 +625,18 @@ angular.module('testerFrontApp')
 		}
 		
 		$scope.sendRegData = function(){
+			if(!$scope.regForm.Username.$valid){
+				alert("yo");	
+			}	
+			
 			if($scope.loginData.pass === $scope.loginData.passConfirm){
 				var newUser = {
 					'username': $scope.loginData.name,
-					'password':$scope.loginData.pass
+					'password':$scope.loginData.pass,
+					'firstName': $scope.loginData.firstName,
+					'lastName': $scope.loginData.lastName,
+					'phone':  $scope.loginData.phone,
+					'email':  $scope.loginData.email,
 				};
 				
 				UserReg.send(newUser).success(function(data) {

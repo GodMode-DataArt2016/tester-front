@@ -1,14 +1,5 @@
 <div class="container">
 	<div ng-if="test.isAvailable">
-		<div ng-class="{ 'bg-danger': userForm.unconfirmed}">
-			<h3 class="text-center">Fill in user data</h3>
-			<form id="user_form" novalidate class="simple-form">
-				<input type="text" class="form-control" ng-model="userForm.name" placeholder="Name" /><br />
-				<input type="text" class="form-control" ng-model="userForm.surname" placeholder="Surname" /><br />
-				<input type="text" class="form-control" ng-model="userForm.phone" placeholder="Phone" /><br />
-				<input type="text" class="form-control" ng-model="userForm.email" placeholder="E-mail" /><br />	
-			</form>
-		</div>
 		<div ng-model="test">
 			<h1 class="text-center">{{test.testName}}</h1>
 		</div>

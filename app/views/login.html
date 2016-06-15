@@ -11,38 +11,71 @@
 				<button type="button" class="btn btn-default" ng-class="{active: register}" ng-click="switchToRegister()">Register</button>
 			</div>
 		</div>
-		<form class="form-horizontal">
-			<div class="form-group spacer-small">
-				<label for="inputEmail" class="col-sm-2 control-label">Username</label>
-				<div class="col-sm-10">
-					<input type="text" class="form-control" id="inputEmail" placeholder="Username" ng-model="loginData.name">
+		<div ng-if="!register">
+			<form id="login_form" name="logForm" class="form-horizontal" novalidate>
+				<div class="form-group spacer-small"  ng-class="{ 'has-error' : logForm.logName.$invalid && !logForm.logName.$pristine }">
+					<label for="inputEmail" class="control-label">Username</label>
+					<input type="text" class="form-control" name="logName" id="inputEmail" placeholder="Username" ng-model="loginData.name" required/>
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="inputPassword" class="col-sm-2 control-label">Password</label>
-				<div class="col-sm-10">
-					<input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="loginData.pass">
-				</div>
-			</div>
-			<div class="form-group" ng-if="!register">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-default" ng-click="logIn()">Sign in</button>
-				</div>
-			</div>
-			<div ng-if="register">
-				<div class="form-group">
-					<label for="inputPasswordReg2" class="col-sm-2 control-label">Repeat password</label>
-					<div class="col-sm-10">
-						<input type="password" class="form-control" id="inputPasswordReg2" placeholder="Password" ng-model="loginData.passConfirm">
-					</div>
+				<div class="form-group" ng-class="{ 'has-error' : logForm.logPass.$invalid && !logForm.logPass.$pristine }">
+					<label for="inputPassword" class="control-label">Password</label>
+					<input type="password" class="form-control" name="logPass" id="inputPassword" placeholder="Password" ng-model="loginData.pass" required/>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default" ng-click="sendRegData()">Register</button>
+					<div class="text-center">
+						<button type="submit" class="btn btn-default" ng-click="logIn()" ng-disabled="logForm.$invalid">Sign in</button>
 					</div>
 				</div>
-			</div>
-		</form>
+			</form>
+		</div>
+		<div ng-if="register">
+			<form id="user_form" class="form-horizontal" name="regForm" novalidate>
+				<div class="form-group spacer-small" ng-class="{ 'has-error' : regForm.Username.$invalid && !regForm.Username.$pristine }">
+					<label for="inputEmail" class="control-label">Username</label>
+					<input type="text" name="Username" class="form-control" id="inputEmail" placeholder="Username" ng-model="loginData.name" ng-maxlength="30" required/>
+					<p ng-show="regForm.Username.$error.maxlength" class="help-block">Username is too long.</p>				
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : regForm.Password.$invalid && !regForm.Password.$pristine }">
+					<label for="inputPassword" class=" control-label">Password</label>				
+					<input type="password" name="Password" class="form-control" id="inputPassword" placeholder="Password" ng-model="loginData.pass" ng-minlength="3" ng-maxlength="30" required/>
+					<p ng-show="regForm.Password.$error.minlength" class="help-block">Too short</p>
+					<p ng-show="regForm.Password.$error.maxlength" class="help-block">Maybe enough?</p>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : regForm.Password2.$invalid && !regForm.Password2.$pristine }">
+					<label for="inputPasswordReg2" class="control-label">Repeat password</label>
+					<input type="password" name="Password2" class="form-control" id="inputPasswordReg2" placeholder="Repeat password" ng-model="loginData.passConfirm" ng-minlength="3" ng-maxlength="30" required/>
+					<p ng-show="regForm.Password2.$error.minlength" class="help-block">Too short</p>
+					<p ng-show="regForm.Password2.$error.maxlength" class="help-block">Maybe enough?</p>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : regForm.fName.$invalid && !regForm.fName.$pristine }">
+					<label for="first_name" class="control-label">First name</label>
+					<input id="first_name" name="fName" type="text" class="form-control" ng-model="loginData.firstName" placeholder="First name" ng-pattern="nameRegexp" ng-maxlength="30" required/>
+					<p ng-show="regForm.fName.$error.pattern" class="help-block">No digits please)</p>
+					<p ng-show="regForm.fName.$error.maxlength" class="help-block">Too long.</p>	
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : regForm.lName.$invalid && !regForm.lName.$pristine }">
+					<label for="last_name" class="control-label">Last name</label>
+					<input id="last_name" name="lName" type="text" class="form-control" ng-model="loginData.lastName" placeholder="Last name" ng-pattern="nameRegexp" ng-maxlength="30" required/>
+					<p ng-show="regForm.lName.$error.pattern" class="help-block">No digits please)</p>
+					<p ng-show="regForm.lName.$error.maxlength" class="help-block">Too long.</p>	
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : regForm.Phone.$invalid && !regForm.Phone.$pristine }">
+					<label for="phone" class="control-label">Phone number</label>
+						<input id="phone" type="text" name="Phone" class="form-control" ng-model="loginData.phone" placeholder="Phone" ng-pattern="numberRegexp" required/>
+					<p ng-show="regForm.Phone.$error.pattern" class="help-block">Use numbers only.</p>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : regForm.email.$invalid && !regForm.email.$pristine }">
+					<label for="email" class="control-label">E-mail</label>
+					<input id="email" type="email" name="email" class="form-control" ng-model="loginData.email" placeholder="E-mail" required/>	
+					<p ng-show="regForm.email.$invalid && !regForm.email.$pristine" class="help-block">Email is invalid.</p>
+				</div>
+				<div class="form-group">
+					<div class="text-center">
+						<button type="submit" class="btn btn-default" ng-click="sendRegData()" ng-disabled="regForm.$invalid">Register</button>
+					</div>
+				</div>
+			</form>	
+		</div>	
 	</div>
 	<div ng-if="isAuthenticated">
 		<h3 class="text-center">You are logged in</h3>
@@ -50,4 +83,14 @@
 			<button type="submit" class="btn btn-default" ng-click="logout()">Logout</button>
 		</div>
 	</div>
+
+
 </div>
+
+
+
+
+
+
+
+
