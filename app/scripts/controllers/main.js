@@ -647,8 +647,8 @@ angular.module('testerFrontApp')
 					'phone':  $scope.loginData.phone,
 					'email':  $scope.loginData.email,
 				};
-				
-				UserReg.send(newUser).then(
+
+				UserReg.send({userData: newUser}).then(
 					function successCallback(response) {
 						$window.alert('User created successfully');
 					}, 
