@@ -622,8 +622,18 @@ angular.module('testerFrontApp')
 				'password':$scope.loginData.pass
 			};
 				
-			OAuth.getAccessToken(loginUser).then(function(err, data){
+			OAuth.getAccessToken(loginUser).then(function(data){
 				$scope.isAuthenticated = OAuth.isAuthenticated();
+				if($scope.isAuthenticated){
+					var url = "/login";
+					if(data && data.data){
+						url = data.data.userRole || "user";
+					} else {
+						url = "user";	
+					}
+					
+					$location.url('/' + url);	
+				}
 			});	
 		}
 		

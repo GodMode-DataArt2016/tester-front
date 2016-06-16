@@ -13,19 +13,22 @@ function appendTransform(defaults, transform) {
 }
 
 function addServerPrefix(oneTest, apiUrl){
-	oneTest.questions.map(function(item){
-		if(item.imageIncluded && item.imgUrl){
-			item.imgUrl = apiUrl + item.imgUrl;	
-		}
-		if(item.answersAreImages && item.allAnswers.length){
-			item.allAnswers.forEach(function(answer){
-				if(answer.imgUrl){
-					answer.imgUrl = apiUrl + answer.imgUrl;	
-				}							
-			});	
-		}	
-		return item;	
-	})
+		
+	if(oneTest && oneTest.questions){
+		oneTest.questions.map(function(item){
+			if(item.imageIncluded && item.imgUrl){
+				item.imgUrl = apiUrl + item.imgUrl;	
+			}
+			if(item.answersAreImages && item.allAnswers.length){
+				item.allAnswers.forEach(function(answer){
+					if(answer.imgUrl){
+						answer.imgUrl = apiUrl + answer.imgUrl;	
+					}							
+				});	
+			}	
+			return item;	
+		});	
+	}
 	
 	return oneTest;	
 };
@@ -56,7 +59,7 @@ testerFrontServices.factory('Test',['$http', 'app_config', function($http, app_c
 					method: 'GET',
 					url: app_config.apiUrl + "api/test/" + id,
 					transformResponse: appendTransform($http.defaults.transformResponse, function(data) {
-						return addServerPrefix(data, app_config.apiUrl);
+						return addServerPrefix(data, app_config.apiUrl);	
 					})
 			})
         }
@@ -77,7 +80,7 @@ testerFrontServices.factory("TestAdmin", ['$http', 'app_config', function($http,
 				method: 'GET',
 				url: app_config.apiUrl + "api/admin/test/" + id,
 				transformResponse: appendTransform($http.defaults.transformResponse, function(data) {
-					return addServerPrefix(data, app_config.apiUrl);
+					return addServerPrefix(data, app_config.apiUrl);	
 				})
 			})
         }

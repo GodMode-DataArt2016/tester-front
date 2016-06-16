@@ -1,8 +1,8 @@
 <div class="container">
-	<div ng-if="!isAuthenticated">
 		<div>
 			<h3 class="text-center">{{errorText}}</h3>	
 		</div>
+	<div ng-if="!isAuthenticated">	
 		<div class="btn-group btn-group-justified" role="group" aria-label="...">
 			<div class="btn-group" role="group">
 				<button type="button" class="btn btn-default" ng-class="{active: !register}" ng-click="switchToLogin()">Login</button>
