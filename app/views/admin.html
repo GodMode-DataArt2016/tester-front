@@ -4,25 +4,18 @@
 	</div>
 	
 	<div>
-		<h3 class="text-center">Tests available. Click to edit</h3>	
+		<h3 class="text-center">Tests available</h3>	
 	</div>
 		<div ng-model="tests">
 			<table class="table table-hover">
-				<tr>
-					<th>
-						Test name
-					</th>
-					<th>
-						Public
-					</th>
-					<th>
-						Statistics
-					</th>
-				</tr>
 				<tr ng-repeat="test in tests | startFrom:currentPage*pageSize | limitTo:pageSize">
 					<td class="break_all"><a href="#/admin/test/{{test.id}}">{{test.testName}}</a></td>
-					<td>{{test.isPublic ? 'yes' : 'no'}}</td>
-					<td><a href="#/admin/statistics/{{test.id}}">statistics</a></td>
+					<td>
+						<a class="btn btn-default" href="#/admin/test/{{test.id}}">Edit</a>
+						</td>
+						<td>
+						<a class="btn btn-default" href="#/admin/statistics/{{test.id}}">Results</a>
+					</td>
 				</tr>
 			</table>
 	</div>
@@ -36,3 +29,5 @@
 		</button>
 	</div>
 </div>
+
+

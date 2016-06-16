@@ -32,9 +32,9 @@
 								<span class="sortorder" ng-show="predicate === 'rating'" ng-class="{reverse:reverse}"></span>
 							</span>
 						</th>
-						<th ng-repeat="question in test.questions">
-							<span class="btn btn-default" ng-click="order(question.id)">{{question.name}}
-								<span class="sortorder" ng-show="predicate === question.id" ng-class="{reverse:reverse}"></span>
+						<th ng-repeat="question in test.questions" class="text-center">
+							<span class="btn btn-default" ng-click="order(question.shortId)">{{question.name}}
+								<span class="sortorder" ng-show="predicate === question.shortId" ng-class="{reverse:reverse}"></span>
 							</span>
 						</th>			
 					</tr>
@@ -55,8 +55,8 @@
 							{{user.rating}}	
 						</td>
 						<td ng-repeat="question in test.questions">
-							<div ng-class="{ 'bg-danger': !user[question.id]}">
-								{{user[question.id]}}	
+							<div ng-class="{ 'bg-danger': !user[question.shortId]}" class="text-center">
+								{{user[question.shortId] ? '+' : '-'}}	
 							</div>
 						</td>
 						

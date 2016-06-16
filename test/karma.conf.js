@@ -32,7 +32,6 @@ module.exports = function(config) {
       'bower_components/query-string/query-string.js',
       'bower_components/angular-oauth2/dist/angular-oauth2.js',
       'bower_components/angularjs-datepicker/dist/angular-datepicker.min.js',
-      'bower_components/angular-http-auth/src/http-auth-interceptor.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

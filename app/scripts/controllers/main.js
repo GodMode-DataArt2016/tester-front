@@ -626,8 +626,8 @@ angular.module('testerFrontApp')
 				$scope.isAuthenticated = OAuth.isAuthenticated();
 				if($scope.isAuthenticated){
 					var url = "/login";
-					if(data && data.data){
-						url = data.data.userRole || "user";
+					if(data && data.data && data.data.userData){
+						url = data.data.userData.userRole || "user";
 					} else {
 						url = "user";	
 					}
@@ -648,9 +648,16 @@ angular.module('testerFrontApp')
 					'email':  $scope.loginData.email,
 				};
 				
-				UserReg.send(newUser).success(function(data) {
-					$window.alert('User created successfully');					
-				});	
+				UserReg.send(newUser).then(
+					function successCallback(response) {
+						$window.alert('User created successfully');
+					}, 
+					function errorCallback(response) {
+						if(response && response.data){
+							$window.alert(response.data.error);
+						}
+				});
+				
 			} else {
 				$window.alert('The entered passwords do not match');	
 			}	

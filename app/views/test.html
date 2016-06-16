@@ -2,6 +2,7 @@
 	<div ng-if="test.isAvailable">
 		<div ng-model="test">
 			<h1 class="text-center">{{test.testName}}</h1>
+			<h3 class="text-center" ng-if="test.isAnswered">Correct answers</h3>
 		</div>
 		<div>
 			<table id="questions_table" class="table table-hover">
@@ -38,7 +39,7 @@
 					</td>
 				</tr>
 			</table>
-			<div id="submit_button" class="text-center spacer">
+			<div id="submit_button" class="text-center spacer" ng-if="!test.isAnswered">
 				<button type="button" class="btn btn-default btn-lg btn-block" ng-click="submitAnswer()" ng-disabled="submited">Submit answer</button>
 			</div>
 			<div id="success_send" class="alert text-center" ng-class="{'alert-success': submited,'alert-danger': !submited }" ng-if="submitText">
