@@ -591,7 +591,10 @@ angular.module('testerFrontApp')
 		if(error_reason){
 			switch (error_reason){
 				case "Unauthorized":
-					$scope.errorText = 'You should log in to use admin features';
+					$scope.errorText = 'You should log in';
+				break;
+				case "Not admin user":
+					$scope.errorText = 'You should log in as admin to use admin features';
 				break;
 				default:
 					$scope.errorText = '';
@@ -624,11 +627,7 @@ angular.module('testerFrontApp')
 			});	
 		}
 		
-		$scope.sendRegData = function(){
-			if(!$scope.regForm.Username.$valid){
-				alert("yo");	
-			}	
-			
+		$scope.sendRegData = function(){		
 			if($scope.loginData.pass === $scope.loginData.passConfirm){
 				var newUser = {
 					'username': $scope.loginData.name,

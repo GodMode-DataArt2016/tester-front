@@ -95,19 +95,16 @@ angular.module('testerFrontApp')
 	}])
 	.run(['$rootScope', '$window', 'OAuth', '$cookies', function($rootScope, $window, OAuth, $cookies) {
 		$rootScope.$on('oauth:error', function(event, rejection) {
-		  // Ignore `invalid_grant` error - should be catched on `LoginController`.
-		  if ('invalid_grant' === rejection.data.error) {
-			return;
-		  }
+			// Ignore `invalid_grant` error - should be catched on `LoginController`.
+			if ('invalid_grant' === rejection.data.error) {
+				return;
+			}
 
-		  // Refresh token when a `invalid_token` error occurs.
-		  if ('invalid_token' === rejection.data.error) {
-			return OAuth.getRefreshToken();
-		  }
-		  
+			if ('Token expired' === rejection.data.error_description) {
+				return OAuth.getRefreshToken();
+			}
 
-		  // Redirect to `/login` with the `error_reason`.
-		  return $window.location.href = '#/login?error_reason=' + rejection.data;
-		  //return $window.location.href = '#/login/' + rejection.data.error;
+			return $window.location.href = '#/login?error_reason=' + rejection.data.error_description;
+			//return $window.location.href = '#/login/' + rejection.data.error;
 		});
 	}]);
