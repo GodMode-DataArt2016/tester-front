@@ -308,19 +308,47 @@ angular.module('testerFrontApp')
 		
 		$scope.questionImgChanged = function(question, input){
 			if (input.files && input.files[0]) {
-				$scope.$apply(function () {
-					question.imgUrl = URL.createObjectURL(event.target.files[0]);
-				});
-				$scope.postImg2(question, input);
+				
+				var file = input.files[0];
+				
+				if (file.type.match('image.*')) {
+					if(file.size < 5242880){
+						/*$scope.$apply(function () {
+							question.imgUrl = URL.createObjectURL(event.target.files[0]);
+						});*/
+						$scope.postImg2(question, file);	
+					} else {
+						input.value = "";
+						alert("file is too big");			
+					}
+						
+				} else {
+					input.value = "";
+					alert("chose image only");	
+				}	
 			}
 		};
 		
 		$scope.answerImgChanged = function(answer, input){
 			if (input.files && input.files[0]) {
-				$scope.$apply(function () {			
-					answer.imgUrl = URL.createObjectURL(event.target.files[0]);	
-				});
-				$scope.postImg2(answer, input);
+				
+				var file = input.files[0];
+					
+				if (file.type.match('image.*')) {
+					if(file.size < 5242880){
+						/*$scope.$apply(function () {			
+							answer.imgUrl = URL.createObjectURL(event.target.files[0]);	
+						});*/
+						$scope.postImg2(answer, file);	
+					} else {
+						input.value = "";
+						alert("file is too big");			
+					}
+					
+				} else {
+					input.value = "";
+					alert("chose image only");	
+				}
 			}
 		};
 		
@@ -348,25 +376,40 @@ angular.module('testerFrontApp')
 				}
 			};			
 			xhr.send(formData);	
-		}
+		};
 		
-		$scope.postImg2 = function (model, input){
-			var formData = new FormData();
-			var file = input.files[0];
-
+		$scope.postImg2 = function (model, file){
+			var formData = new FormData();		
+			
 			formData.append('image', file, file.name);
-			
-			
+		
 			SubmitImage.create({}, formData).$promise.then(function (res) {
 					if(res.id){						
-						model.imgId = res.id;	
+						model.imgId = res.id;		
+						model.imgUrl = URL.createObjectURL(file);	
 					}
 				}).catch(function (err) {
-					alert('An error occurred!');
-						console.log(err);
-			});
+					if(err && err.data){
+						alert(err.data);	
+					} else {
+						alert('An error occurred!');
+					}
+			});	
+		};
+		
+		$scope.validateImgExtention = function (fileName){
+				
+			var allowed_extensions = new Array("jpg", "jpeg", "bmp", "gif", "png");
+			var file_extension = fileName.split('.').pop(); 
 			
-			
+			for(var i = 0; i <= allowed_extensions.length; i++)
+			{
+				if(allowed_extensions[i]==file_extension)
+				{
+					return true; 
+				}
+			}		
+			return false;
 		}
 		
 		$scope.submitTest = function (){
