@@ -70,8 +70,8 @@ angular
 
   
 angular.module('testerFrontApp').constant('app_config', {
-	apiUrl: 'http://localhost:1337/'
-	//apiUrl: 'http://54.149.152.128:1337/'
+	//apiUrl: 'http://localhost:1337/'
+	apiUrl: 'http://54.149.152.128:1337/'
 	//apiUrl: '/'
 });
 
@@ -99,24 +99,29 @@ angular.module('testerFrontApp')
 			if ('invalid_grant' === rejection.data.error) {
 				return;
 			}
-
-			if ('Token expired' === rejection.data.error_description) {
-				var url = $location.url();
-				/*return OAuth.getRefreshToken().then(function(res) {
-					$window.location.href = '#/' + url;            
-                });*/
-				
-				return OAuth.getRefreshToken().then(
-					function(success) {
-						console.log("reload page after refresh token");
-						$route.reload();
-						//$window.location.reload();
-						//$window.location.href = '#' + url;
-					},
-					function(error) {
-						$cookies.remove('token');
-						return $window.location.href = '#/login?error_reason=' + rejection.data.error;
-				});
+			
+			if('invalid_token' === rejection.data.error){
+				if ('Token expired' === rejection.data.error_description) {
+					var url = $location.url();
+					/*return OAuth.getRefreshToken().then(function(res) {
+						$window.location.href = '#/' + url;            
+					});*/
+					
+					return OAuth.getRefreshToken().then(
+						function(success) {
+							console.log("reload page after refresh token");
+							$route.reload();
+							//$window.location.reload();
+							//$window.location.href = '#' + url;
+						},
+						function(error) {
+							$cookies.remove('token');
+							return $window.location.href = '#/login?error_reason=' + rejection.data.error;
+					});
+				} else {
+					$cookies.remove('token');
+					return $window.location.href = '#/login?error_reason=' + rejection.data.error;	
+				}	
 			}
 
 			return $window.location.href = '#/login?error_reason=' + rejection.data.error_description;

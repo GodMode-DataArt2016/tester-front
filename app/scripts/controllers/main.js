@@ -586,16 +586,16 @@ angular.module('testerFrontApp')
 angular.module('testerFrontApp')
 	.controller('AdminStatsCtrl', ['$scope', '$routeParams', 'Statistics', 'StatExport', function($scope, $routeParams, Statistics, StatExport) {
 		
+		$scope.report ={
+			isReady: false,
+			reportLink: ""
+		}
+		
 		
 		Statistics.query({ id: $routeParams.statsId}, function(data) {
 			$scope.test = data;	
 		});
-		/*
-		Statistics.get({ id: $routeParams.statsId}, function(data) {
-			$scope.test = data;
-			
-			
-		});	*/
+
 		
 		$scope.order = function(predicate) {
 			$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
@@ -603,10 +603,31 @@ angular.module('testerFrontApp')
 		};	
 		
 		$scope.getExcel = function() {
-			StatExport.query({ id: $routeParams.statsId}, function(data) {
+			/*StatExport.query({ id: $routeParams.statsId}, function(data) {
+				if(data && data.reportLink){
+					$scope.report.reportLink = data.reportLink;
+					$scope.report.isReady = true;
+				} else {
+					alert("problem occurred");	
 					
-			});
+				}
+			});*/
+			StatExport.query($routeParams.statsId).then(function(res){
+					if(res.data && res.data.reportLink){
+						$scope.report.reportLink = res.data.reportLink;
+						$scope.report.isReady = true;
+					} else {
+						alert("problem occurred");	
+						
+					}      
+				},
+				function(err){
+					alert("problem occurred");	
+				}
+			);
 		};
+		
+		
 		
 }]);
 
@@ -703,8 +724,10 @@ angular.module('testerFrontApp')
 				};
 
 				UserReg.send({userData: newUser}).then(
-					function successCallback(response) {
+					function successCallback(response) {					
 						$window.alert('User created successfully');
+						$scope.register = false;
+						
 					}, 
 					function errorCallback(response) {
 						if(response && response.data){

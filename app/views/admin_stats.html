@@ -64,5 +64,15 @@
 				</table>
 			</div>
 		</div>
+		<div class="spacer text-center">
+			<button id="get_excel_report" class="btn btn-default " ng-click="getExcel()" ng-disabled="report.isReady">
+				Download report
+			</button>
+			<a href="{{report.reportLink}}" ng-if="report.isReady">5 minute link</a>
+		</div>
 	</div>
 </div>
+
+
+
+

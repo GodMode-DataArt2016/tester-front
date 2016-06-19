@@ -42,15 +42,6 @@ testerFrontServices.factory("TestList", ['$resource', 'app_config', function($re
 		}
 	});
 }]);
-/*
-testerFrontServices.factory("Test", ['$resource', 'app_config', function($resource, app_config) {
-	return $resource(app_config.apiUrl + "api/test/:id", {}, {
-		query: {		
-			method: "GET",
-			isArray: true
-		}
-	});
-}]);*/
 
 testerFrontServices.factory('Test',['$http', 'app_config', function($http, app_config){
     return {
@@ -86,46 +77,37 @@ testerFrontServices.factory("TestAdmin", ['$http', 'app_config', function($http,
         }
     };
 }]);
-/*
-testerFrontServices.factory('Question2',['$http', 'app_config', function($http, app_config){
-    return {
-        query: function(id) {
-            return $http({
-					method: 'GET',
-					url: app_config.apiUrl + "api/question/" + id,
-					transformResponse: appendTransform($http.defaults.transformResponse, function(data) {
-						return addServerPrefix(data, app_config.apiUrl);
-					})
-			})
-        }
-    };
-}]);
-
-testerFrontServices.factory("QuestionAdmin2", ['$http', 'app_config', function($http, app_config) {
-	return {
-        query: function(id) {
-            return $http({
-				method: 'GET',
-				url: app_config.apiUrl + "api/admin/question/" + id,
-				transformResponse: appendTransform($http.defaults.transformResponse, function(data) {
-					return addServerPrefix(data, app_config.apiUrl);
-				})
-			})
-        }
-    };
-}]);*/
 
 testerFrontServices.factory("Statistics", ['$resource', 'app_config', function($resource, app_config) {
   return $resource(app_config.apiUrl + "api/admin/statistics/:id", {}, {
     query: { method: "GET", isArray: false }
   });
 }]);
-
+/*
 testerFrontServices.factory("StatExport", ['$resource', 'app_config', function($resource, app_config) {
   return $resource(app_config.apiUrl + "api/admin/export/:id", {}, {
     query: { method: "GET", isArray: false }
   });
 }]);
+*/
+
+testerFrontServices.factory('StatExport',['$http', 'app_config', function($http, app_config){
+    return {
+        query: function(id) {
+            return $http({
+					method: 'GET',
+					url: app_config.apiUrl + "api/admin/export/" + id,
+					transformResponse: appendTransform($http.defaults.transformResponse, function(data) {
+						if(data && data.reportLink){
+							data.reportLink = app_config.apiUrl + data.reportLink;
+						}						
+						return data;	
+					})
+			})
+        }
+    };
+}]);
+
 
 testerFrontServices.factory("SubmitUser", ['$resource', 'app_config', function($resource, app_config) {
 	return $resource(app_config.apiUrl + "api/test/:id");
