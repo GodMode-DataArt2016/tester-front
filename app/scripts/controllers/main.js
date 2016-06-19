@@ -665,19 +665,30 @@ angular.module('testerFrontApp')
 				'password':$scope.loginData.pass
 			};
 				
-			OAuth.getAccessToken(loginUser).then(function(data){
-				$scope.isAuthenticated = OAuth.isAuthenticated();
-				if($scope.isAuthenticated){
-					var url = "/login";
-					if(data && data.data && data.data.userData){
-						url = data.data.userData.userRole || "user";
-					} else {
-						url = "user";	
+			OAuth.getAccessToken(loginUser).then(function(data){	
+					$scope.isAuthenticated = OAuth.isAuthenticated();
+					if($scope.isAuthenticated){
+						var url = "/login";
+						if(data && data.data && data.data.userData){
+							url = data.data.userData.userRole || "user";
+						} else {
+							url = "user";	
+						}
+						
+						$location.url('/' + url);	
+					}
+				},
+				function(error){	
+					if(error.data){
+						if(error.data.error === "invalid_grant"){
+							alert("Invalid username/password");	
+						} else {
+							alert("problem occurred");	
+						}	
 					}
 					
-					$location.url('/' + url);	
 				}
-			});	
+			);	
 		}
 		
 		$scope.sendRegData = function(){		

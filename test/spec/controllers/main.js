@@ -4,7 +4,7 @@ describe('Controller: MainCtrl', function () {
 
   // load the controller's module
   beforeEach(module('testerFrontApp'));
-
+	
   var MainCtrl,
     scope;
 
@@ -17,19 +17,16 @@ describe('Controller: MainCtrl', function () {
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    //expect(MainCtrl.awesomeThings.length).toBe(5);
-  });
 });
 
 
 describe('Controller: AdminTestCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('testerFrontApp'));
-
-  var AdminTestCtrl,
-    scope;
+	beforeEach(module('testerFrontApp'));
+  
+	var AdminTestCtrl,
+		scope;
 
   // Initialize the controller and a mock scope
   
@@ -49,31 +46,31 @@ describe('Controller: AdminTestCtrl', function () {
 		describe('Test create:  ', function() {
 			
 			it('there should be no questions when create new test', function () {
-				expect(scope.questions.length).toBe(0);		
+				expect(scope.test.questions.length).toBe(0);		
 			});
 			
 			it('add question. length should be 1', function () {
 				scope.addQuestion();
-				expect(scope.questions.length).toBe(1);
+				expect(scope.test.questions.length).toBe(1);
 			});
 			
 			it('new question answers length should be 0', function () {
 				scope.addQuestion();
-				expect(scope.questions[0].allAnswers.length).toEqual(0);				
+				expect(scope.test.questions[0].allAnswers.length).toEqual(0);				
 			});
 			
 			it('check if answers adding correctly ', function () {	
 				scope.addQuestion();		
-				scope.addAnswer(scope.questions[0]);	
-				scope.addAnswer(scope.questions[0]);			
-				expect(scope.questions[0].allAnswers.length).toEqual(2);
+				scope.addAnswer(scope.test.questions[0]);	
+				scope.addAnswer(scope.test.questions[0]);			
+				expect(scope.test.questions[0].allAnswers.length).toEqual(2);
 			});
 				
 			it('check if answers adding correctly ', function () {	
 				scope.addQuestion();		
-				scope.addAnswer(scope.questions[0]);	
-				scope.addAnswer(scope.questions[0]);			
-				expect(scope.questions[0].allAnswers.length).toEqual(2);
+				scope.addAnswer(scope.test.questions[0]);	
+				scope.addAnswer(scope.test.questions[0]);			
+				expect(scope.test.questions[0].allAnswers.length).toEqual(2);
 			});
 					
 		});
@@ -83,77 +80,77 @@ describe('Controller: AdminTestCtrl', function () {
 			beforeEach(function() {
 				scope.addQuestion();
 				//scope.addQuestion();
-				scope.addAnswer(scope.questions[0]);
-				scope.addAnswer(scope.questions[0]);			
+				scope.addAnswer(scope.test.questions[0]);
+				scope.addAnswer(scope.test.questions[0]);			
 			});
 			
 			
 			it('check if empty answers is not verificated ', function () {				
-				expect(scope.verifyAnswer(scope.questions[0])).toBe(false);		
+				expect(scope.verifyAnswer(scope.test.questions[0])).toBe(false);		
 			});
 			
 			it('check if filled answer is verificated ', function () {
-				scope.questions[0].allAnswers[0] = {
+				scope.test.questions[0].allAnswers[0] = {
 					"text":"answer 1",
 					"isDefault":true,
 					"isTrue":false,
 				};
 				
-				scope.questions[0].allAnswers[1] = {
+				scope.test.questions[0].allAnswers[1] = {
 					"text":"answer 1",
 					"isDefault":false,
 					"isTrue":false,
 				};
-				scope.questions[0].textDescription = "question_1";
+				scope.test.questions[0].textDescription = "question_1";
 				
-				expect(scope.verifyQuestion(scope.questions[0])).toBe(true);			
+				expect(scope.verifyQuestion(scope.test.questions[0])).toBe(true);			
 			});	
 			
 			it('check if image answers without image chosen are not verificated ', function () {
-				scope.questions[0].allAnswers[0] = {
+				scope.test.questions[0].allAnswers[0] = {
 					"text":"answer 1",
 					"isDefault":true,
 					"isTrue":false,
 
 				};
 				
-				scope.questions[0].allAnswers[1] = {
+				scope.test.questions[0].allAnswers[1] = {
 					"text":"answer 1",
 					"isDefault":false,
 					"isTrue":false
 				};
-				scope.questions[0].textDescription = "question_1";
-				scope.questions[0].answersAreImages = true;
+				scope.test.questions[0].textDescription = "question_1";
+				scope.test.questions[0].answersAreImages = true;
 				
-				expect(scope.verifyQuestion(scope.questions[0])).toBe(false);			
+				expect(scope.verifyQuestion(scope.test.questions[0])).toBe(false);			
 			});
 			
 			it('check if image answers with image chosen are  verificated ', function () {
-				scope.questions[0].allAnswers[0] = {
+				scope.test.questions[0].allAnswers[0] = {
 					"text":"answer 1",
 					"isDefault":true,
 					"isTrue":false,
 					"imgId": 1234
 				};
 				
-				scope.questions[0].allAnswers[1] = {
+				scope.test.questions[0].allAnswers[1] = {
 					"text":"answer 1",
 					"isDefault":false,
 					"isTrue":false,
 					"imgId": 1235
 				};
-				scope.questions[0].textDescription = "question_1";
-				scope.questions[0].answersAreImages = true;
+				scope.test.questions[0].textDescription = "question_1";
+				scope.test.questions[0].answersAreImages = true;
 				
-				expect(scope.verifyQuestion(scope.questions[0])).toBe(true);			
+				expect(scope.verifyQuestion(scope.test.questions[0])).toBe(true);			
 			});
 
 			it('check if text answer is verificated ', function () {
-				scope.questions[0].type = "text";
-				scope.questions[0].textAnswer = "answer 1";
+				scope.test.questions[0].type = "text";
+				scope.test.questions[0].textAnswer = "answer 1";
 				
-				scope.questions[0].textDescription = "question_1";
-				expect(scope.verifyQuestion(scope.questions[0])).toBe(true);			
+				scope.test.questions[0].textDescription = "question_1";
+				expect(scope.verifyQuestion(scope.test.questions[0])).toBe(true);			
 			});			
 		});
 		
@@ -161,10 +158,10 @@ describe('Controller: AdminTestCtrl', function () {
 			
 			beforeEach(function() {
 				scope.addQuestion();
-				scope.questions[0].type = "text";
-				scope.questions[0].textAnswer = "answer 1";
+				scope.test.questions[0].type = "text";
+				scope.test.questions[0].textAnswer = "answer 1";
 				
-				scope.questions[0].textDescription = "question_1";
+				scope.test.questions[0].textDescription = "question_1";
 			});
 			
 			
@@ -187,9 +184,13 @@ describe('Controller: AdminTestCtrl', function () {
 	describe('existing test:  ', function() {
 		var httpBackend, authRequestHandler,createController;
 		
-		beforeEach(inject(function ($controller, $rootScope) {
-			scope = $rootScope.$new();
+		//var state;
 		
+		beforeEach(inject(function ($controller, $rootScope) {
+			
+			
+			scope = $rootScope.$new();
+			
 			createController = function() {
 				return  $controller('AdminTestCtrl', {
 					$scope: scope,
@@ -198,28 +199,29 @@ describe('Controller: AdminTestCtrl', function () {
 				});
 			};
 		}));
-		
+		/*
 		describe('test query mock  ', function() {
-			
-			beforeEach(inject(function($httpBackend) {			
+	
+			beforeEach(inject(function($httpBackend) {				
 				httpBackend = $httpBackend;
 				// backend definition common for all tests
 				//authRequestHandler = httpBackend.when('GET', 'api/admin/tests/:id.json').respond({userId: 'userX'}, {'A-Token': 'xxx'});
-//console.log(httpBackend);	
-//console.log("httpBackend-------------------------");				
+
+				//console.log("httpBackend-------------------------", httpBackend);				
 			}));
 			
 			
-			it('check if test without test data is not verificated ', function () {				
-				httpBackend.expectGET('api/admin/tests/1.json').respond({
+			it('check if there is a query to admin/test/:id ', function () {	
+				//console.log("httpBackend --", httpBackend);	
+				
+				
+				httpBackend.expectGET('http://localhost:1337/api/admin/test/1').respond({
 					"id":1,
 					"testName": "firstTest",
 					"isPublic": true,
 					"startDate": 1461785956668,
 					"endDate": 1461785959999,
-					"questions": [1,2]
-				});
-				httpBackend.expectGET('api/admin/questions/1.json').respond({
+					"questions": [{
 						"id":1,
 						"textDescription": "question № 1",
 						"type": "radio",
@@ -247,42 +249,20 @@ describe('Controller: AdminTestCtrl', function () {
 							"isTrue":false,
 							"imgId":""
 						}]	
+					}]
 				});
-				httpBackend.expectGET('api/admin/questions/2.json').respond({
-						"id":2,
-						"textDescription": "question № 2",
-						"type": "checkbox",
-						"picture": "",
-						"imgId":"",
-						"answersAreImages": false,
-						"imageIncluded": false,
-						"textAnswer": "",
-						"allAnswers": [
-							{
-								"text":"answer 1",
-								"isTrue":false,
-								"isDefault":false,
-								"imgId":""
-							},
-							{
-								"text":"answer 2",
-								"isTrue":true,
-								"isDefault":false,
-								"imgId":""
-							},
-							{
-								"text":"answer 3",
-								"isTrue":false,
-								"isDefault":false,
-								"imgId":""
-							}]	
-				});
+				
+				//httpBackend.whenGET(/^\/views\//).passThrough();
+				httpBackend.whenGET('views/main.html').passThrough();
+				
 				AdminTestCtrl = createController();
+				//state.expectTransitionTo('views/main.html');
 				httpBackend.flush();
 			});
 			
 
 		});
+		*/
 	});
 	
 });
