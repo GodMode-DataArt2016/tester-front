@@ -118,6 +118,8 @@ angular.module('testerFrontApp')
 							$cookies.remove('token');
 							return $window.location.href = '#/login?error_reason=' + rejection.data.error;
 					});
+				} else if("Not admin user" === rejection.data.error_description){
+					return $window.location.href = '#/login?error_reason=' + rejection.data.error_description;	
 				} else {
 					$cookies.remove('token');
 					return $window.location.href = '#/login?error_reason=' + rejection.data.error;	

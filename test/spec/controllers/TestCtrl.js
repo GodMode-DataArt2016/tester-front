@@ -1,66 +1,9 @@
 'use strict';
-/*
-describe('Controller: TestCtrl', function () {
-
-	var TestCtrl, scope;
-	var localSubmitUser,localTest;
-
-	beforeEach(module('testerFrontApp'));
-	beforeEach(module('testerFrontServices'));
-	
-	var $controller;
-	
-	beforeEach(inject(function(_$controller_){
-    // The injector unwraps the underscores (_) from around the parameter names when matching
-    $controller = _$controller_;
-	}));
-  
-	beforeEach(inject(function ($controller, $rootScope, Test, SubmitUser) {
-		localTest = Test;
-		localSubmitUser = SubmitUser;
-		scope = $rootScope.$new();
-		TestCtrl = $controller('TestCtrl', {
-			$scope: scope,
-			$routeParams: {testId: 1},
-			Test: localTest,
-			SubmitUser: localSubmitUser
-		});
-	}));
-	
-	describe('$scope.setDefault: ', function() {
-		it('sets the setDefault property true if chosen', function() {
-			var allAnswers = [
-				{
-					text: "answer 1",
-					isDefault: false		
-				},
-				{
-					text: "answer 2",
-					isDefault: false		
-				},
-				{
-					text: "answer 2",
-					isDefault: false		
-				}
-			];
-			console.log("scope = ", $scope);
-			$scope.setDefault(allAnswers, allAnswers[0]);	
-			expect(allAnswers[0].isDefault).toBe(true);
-			
-			$scope.setDefault(allAnswers, allAnswers[1]);	
-			expect(allAnswers[1].isDefault).toBe(true);
-			expect(allAnswers[1].isDefault).toBe(false);
-		});
-	});
-	
-	
-});*/
-
 
 describe('PasswordController', function() {
-  beforeEach(module('testerFrontApp'));
+	beforeEach(module('testerFrontApp'));
 
-  var $controller;
+	var $controller;
 
 	beforeEach(inject(function(_$controller_){
 	// The injector unwraps the underscores (_) from around the parameter names when matching
