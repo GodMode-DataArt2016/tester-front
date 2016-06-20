@@ -241,15 +241,25 @@ angular.module('testerFrontApp')
 				$scope.testNotNew = true;
 				
 				$scope.test = data;
-				$scope.test.startDate = new Date(data.startDate);
-				$scope.test.endDate = new Date(data.endDate);
+				$scope.test.startDate = $scope.formatDate(data.startDate);
+				$scope.test.endDate = $scope.formatDate(data.endDate);
 				
 				$scope.privateLink = '/test/' + data.id;					
 			});
 		}
-
+		
+		$scope.formatDate = function(date){
+			var d = new Date(date),
+				month = '' + (d.getMonth() + 1),
+				day = '' + d.getDate(),
+				year = d.getFullYear();
 			
-				
+			if (month.length < 2) month = '0' + month;
+			if (day.length < 2) day = '0' + day;
+			
+			return [year, month, day].join('-');	
+		}
+		
 		$scope.addQuestion = function(){
 			var newQuestion = {				
 				type: "radio",	
