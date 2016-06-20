@@ -42,10 +42,10 @@ angular
 		  controller: 'AdminCtrl',
 		  controllerAs: 'admin'
       })
-	  .when('/admin/newtest', {
-		  templateUrl: 'views/newtest.html',
-		  controller: 'NewtestCtrl',
-		  controllerAs: 'newtest'
+	  .when('/admin/test', {
+		  templateUrl: 'views/admin_test.html',
+		  controller: 'AdminTestCtrl',
+		  controllerAs: 'admintest'
       })
 	  .when('/admin/test/:testId', {
 		  templateUrl: 'views/admin_test.html',
@@ -70,8 +70,8 @@ angular
 
   
 angular.module('testerFrontApp').constant('app_config', {
-	//apiUrl: 'http://localhost:1337/'
-	apiUrl: 'http://54.149.152.128:1337/'
+	apiUrl: 'http://localhost:1337/'
+	//apiUrl: 'http://54.149.152.128:1337/'
 	//apiUrl: '/'
 });
 
@@ -99,7 +99,7 @@ angular.module('testerFrontApp')
 			if ('invalid_grant' === rejection.data.error) {
 				return;
 			}
-			
+
 			if('invalid_token' === rejection.data.error){
 				if ('Token expired' === rejection.data.error_description) {
 					var url = $location.url();
@@ -123,8 +123,9 @@ angular.module('testerFrontApp')
 					return $window.location.href = '#/login?error_reason=' + rejection.data.error;	
 				}	
 			}
-
-			return $window.location.href = '#/login?error_reason=' + rejection.data.error_description;
-			//return $window.location.href = '#/login/' + rejection.data.error;
+			//return $window.location.href = '#/login?error_reason=' + rejection.data.error_description;		
+			return setTimeout(function() { 
+				return $window.location.href = '#/login?error_reason=' + rejection.data.error_description;
+			},500);
 		});
 	}]);

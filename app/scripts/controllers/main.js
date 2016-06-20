@@ -22,7 +22,6 @@ angular.module('testerFrontApp')
 				}      
 			},
 			function(err){
-				
 		});
 		
 		
@@ -41,7 +40,6 @@ angular.module('testerFrontApp')
 			}      
 		},
 		function(err){
-			
 		});
 }]);
 
@@ -70,9 +68,7 @@ angular.module('testerFrontApp')
 			});
 			answer.isDefault = true;
 		};
-		
-		$scope.submitArray = null;
-		
+			
 		$scope.submitAnswer = function() {
 			var verified = true;			
 			var status = "";
@@ -126,9 +122,11 @@ angular.module('testerFrontApp')
 							alert("problem occurred");	
 						}
 				});	
+				
+				return status;
 			} else {
 				$scope.submitText = status;
-				//alert(status);		
+				return status;
 			}
 		};	
 		
@@ -172,8 +170,6 @@ angular.module('testerFrontApp')
 		$scope.transformTest = function (){
 			var submitObject = {};
 			
-			// userForm moved to register
-			//submitObject.userForm = $scope.transformUserform($scope.userForm);
 			submitObject.id = $scope.test.id;
 			submitObject.testName = $scope.test.testName;
 
@@ -186,15 +182,6 @@ angular.module('testerFrontApp')
 			
 			return submitObject;
 		};
-		
-		$scope.transformUserform = function (form){
-			return {
-				name:form.name,
-				surname:form.surname,
-				phone:form.phone,
-				email:form.email,			
-			};		
-		}
 		
 		$scope.transformQuestion = function (question){
 			var submitObj = {
@@ -237,7 +224,6 @@ angular.module('testerFrontApp')
 
 angular.module('testerFrontApp')
 	.controller('AdminTestCtrl', ['$scope', '$routeParams', 'TestAdmin', 'SubmitAdmin', 'SubmitImage', '$window', function($scope, $routeParams, TestAdmin, SubmitAdmin, SubmitImage, $window) {
-
 		$scope.test = {
 			unconfirmed: false,
 			isPublic: true,
@@ -250,8 +236,8 @@ angular.module('testerFrontApp')
 		$scope.submited = false;
 		$scope.submitText = '';
 		
-		if($routeParams.testId !== 'createnew'){		
-			TestAdmin.query($routeParams.testId).success(function(data) {									
+		if($routeParams.testId !== 'createnew'){	
+			TestAdmin.query($routeParams.testId).success(function(data) {	
 				$scope.testNotNew = true;
 				
 				$scope.test = data;
